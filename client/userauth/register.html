@@ -405,13 +405,11 @@
 
     <script>
         function goBack() {
-            console.log('Navigate back to login');
-            // window.location.href = 'login.html';
+            window.location.href = 'login.html';
         }
 
         function goToLogin() {
-            console.log('Navigate to login page');
-            // window.location.href = 'login.html';
+            window.location.href = 'login.html';
         }
 
         // Form validation functions
@@ -513,16 +511,38 @@
                 errorElement.style.display = 'none';
             }
         });
+    </script>
 
+    <!-- API Connection Script -->
+    <script src="../js/api.js"></script>
+    <script>
+        // Test if API is loaded
+        console.log('API loaded:', typeof API);
+        console.log('Utils loaded:', typeof Utils);
+        
+        // Test button click
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.querySelector('.register-button');
+            if (submitButton) {
+                console.log('Submit button found:', submitButton);
+                submitButton.addEventListener('click', function() {
+                    console.log('Button clicked!');
+                });
+            } else {
+                console.log('Submit button not found!');
+            }
+        });
+        
         // Form submission
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            console.log('Form submitted!'); // Debug log
             
             if (validateForm()) {
+                console.log('Form validation passed'); // Debug log
                 const formData = {
-                    firstName: document.getElementById('firstName').value.trim(),
-                    lastName: document.getElementById('lastName').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
+                    full_name: document.getElementById('firstName').value.trim() + ' ' + document.getElementById('lastName').value.trim(),
+                    phone_number: document.getElementById('phone').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     password: document.getElementById('password').value,
                     gender: document.querySelector('input[name="gender"]:checked').value,
@@ -530,21 +550,29 @@
                     address: document.getElementById('address').value.trim()
                 };
                 
-                console.log('Registration data:', formData);
+                console.log('Form data:', formData); // Debug log
                 
                 // Disable button during submission
                 const submitButton = document.querySelector('.register-button');
                 submitButton.disabled = true;
                 submitButton.textContent = 'Creating Account...';
                 
-                // Simulate API call
-                setTimeout(() => {
-                    alert('Registration successful! Please login with your credentials.');
+                try {
+                    console.log('Calling API.register...'); // Debug log
+                    const response = await API.register(formData);
+                    console.log('API response:', response); // Debug log
+                    Utils.showSuccess('Registration successful! Please login with your credentials.');
                     submitButton.disabled = false;
                     submitButton.textContent = 'Create Account';
-                    // Redirect to login page
-                    // window.location.href = 'login.html';
-                }, 2000);
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    console.error('Registration error:', error); // Debug log
+                    Utils.showError(error.message);
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Create Account';
+                }
+            } else {
+                console.log('Form validation failed'); // Debug log
             }
         });
     </script>

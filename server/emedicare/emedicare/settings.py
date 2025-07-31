@@ -73,26 +73,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'userauth', 
     'appointment',
     'clinical',
     'notification',
     'package',
     'pharmacy',
-    # 'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    # 'corsheaders.middleware.CorsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'emedicare.urls'
@@ -123,18 +121,17 @@ WSGI_APPLICATION = 'emedicare.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.permissions.AllowAny',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
     )
 }
 from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),  # <-- Increase this as needed
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Optional, if using refresh tokens
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3),  # 3 days as specified
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # 7 days refresh token
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES':('Bearer',),
@@ -187,7 +184,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

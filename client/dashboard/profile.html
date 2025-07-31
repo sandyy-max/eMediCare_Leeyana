@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - eMediCare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); min-height: 100vh; color: #004AAD; }
+        .header { background: white; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0, 74, 173, 0.1); border-bottom: 3px solid #004AAD; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .back-button { background: #004AAD; border: none; color: white; cursor: pointer; padding: 10px 20px; border-radius: 6px; font-weight: 500; }
+        .back-button:hover { background: #1C7EB7; }
+        .logo-text { font-size: 24px; font-weight: 700; color: #004AAD; }
+        .main-content { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .profile-container { display: grid; grid-template-columns: 1fr 300px; gap: 25px; }
+        .profile-main { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 74, 173, 0.1); overflow: hidden; }
+        .profile-sidebar { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 74, 173, 0.1); padding: 20px; height: fit-content; }
+        .profile-header { background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%); color: white; padding: 30px; text-align: center; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 40px; }
+        .profile-name { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+        .profile-role { font-size: 14px; opacity: 0.9; }
+        .profile-tabs { display: flex; border-bottom: 2px solid #DDE6EE; }
+        .tab-button { flex: 1; padding: 15px 20px; background: none; border: none; cursor: pointer; font-weight: 600; color: #A1BCCC; border-bottom: 3px solid transparent; }
+        .tab-button.active { color: #004AAD; border-bottom-color: #004AAD; background: #f8f9fa; }
+        .tab-content { display: none; padding: 25px; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #004AAD; margin-bottom: 8px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #DDE6EE; background: white; border-radius: 6px; font-size: 14px; color: #004AAD; outline: none; transition: border-color 0.2s ease; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #48ADE7; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .submit-button { background: #004AAD; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s ease; }
+        .submit-button:hover { background: #1C7EB7; }
+        .submit-button:disabled { background: #DDE6EE; color: #A1BCCC; cursor: not-allowed; }
+        .info-card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #DDE6EE; }
+        .info-label { font-size: 12px; color: #A1BCCC; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
+        .info-value { font-size: 16px; color: #004AAD; font-weight: 500; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #DDE6EE; }
+        .stat-number { font-size: 24px; font-weight: 700; color: #004AAD; margin-bottom: 5px; }
+        .stat-label { font-size: 12px; color: #48ADE7; font-weight: 500; }
+        .sidebar-title { font-size: 16px; font-weight: 600; color: #004AAD; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #DDE6EE; }
+        .quick-actions { display: flex; flex-direction: column; gap: 10px; }
+        .quick-action-btn { padding: 12px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .change-password { background: #004AAD; color: white; }
+        .change-password:hover { background: #1C7EB7; }
+        .privacy-settings { background: #48ADE7; color: white; }
+        .privacy-settings:hover { background: #A1BCCC; }
+        .delete-account { background: #dc3545; color: white; }
+        .delete-account:hover { background: #c82333; }
+        .loading { text-align: center; padding: 40px; color: #48ADE7; }
+        .loading-spinner { border: 3px solid #DDE6EE; border-top: 3px solid #004AAD; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .success-message { background: #d4edda; color: #155724; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
+        .error-message { background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        @media (max-width: 768px) { .profile-container { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="back-button" onclick="goBack()">← Back to Dashboard</button>
+                <div class="logo-text">eMediCare - Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="profile-container">
+            <div class="profile-main">
+                <div class="profile-header">
+                    <div class="profile-avatar">👤</div>
+                    <div class="profile-name" id="profileName">Loading...</div>
+                    <div class="profile-role">Patient</div>
+                </div>
+
+                <div class="profile-tabs">
+                    <button class="tab-button active" onclick="switchTab('personal')">Personal Info</button>
+                    <button class="tab-button" onclick="switchTab('medical')">Medical Info</button>
+                    <button class="tab-button" onclick="switchTab('security')">Security</button>
+                    <button class="tab-button" onclick="switchTab('preferences')">Preferences</button>
+                </div>
+
+                <div id="personal" class="tab-content active">
+                    <div id="personal-content" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading personal information...</p>
+                    </div>
+                </div>
+
+                <div id="medical" class="tab-content">
+                    <div id="medical-content" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading medical information...</p>
+                    </div>
+                </div>
+
+                <div id="security" class="tab-content">
+                    <div id="security-content" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading security settings...</p>
+                    </div>
+                </div>
+
+                <div id="preferences" class="tab-content">
+                    <div id="preferences-content" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading preferences...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-sidebar">
+                <div style="margin-bottom: 25px;">
+                    <div class="sidebar-title">Account Stats</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalAppointments">0</div>
+                            <div class="stat-label">Appointments</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="activeMedications">0</div>
+                            <div class="stat-label">Medications</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completedTests">0</div>
+                            <div class="stat-label">Lab Tests</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="daysRegistered">0</div>
+                            <div class="stat-label">Days Registered</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <div class="sidebar-title">Quick Actions</div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn change-password" onclick="changePassword()">🔐 Change Password</button>
+                        <button class="quick-action-btn privacy-settings" onclick="privacySettings()">🔒 Privacy Settings</button>
+                        <button class="quick-action-btn delete-account" onclick="deleteAccount()">🗑️ Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        let userProfile = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Utils.isLoggedIn()) {
+                Utils.showError('Please login first');
+                window.location.href = '../userauth/login.html';
+                return;
+            }
+            loadUserProfile();
+        });
+
+        async function loadUserProfile() {
+            try {
+                const response = await API.getUserProfile();
+                userProfile = response;
+                console.log('User profile loaded:', userProfile);
+                updateProfileDisplay();
+                renderAllTabs();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+                Utils.showError('Failed to load profile data. Please try again.');
+                // Don't use sample data - show empty profile
+                userProfile = null;
+                updateProfileDisplay();
+                renderAllTabs();
+                updateStats();
+            }
+        }
+
+        function updateProfileDisplay() {
+            if (userProfile) {
+                document.getElementById('profileName').textContent = userProfile.full_name;
+            }
+        }
+
+        function updateStats() {
+            if (userProfile && userProfile.account_stats) {
+                document.getElementById('totalAppointments').textContent = userProfile.account_stats.total_appointments;
+                document.getElementById('activeMedications').textContent = userProfile.account_stats.active_medications;
+                document.getElementById('completedTests').textContent = userProfile.account_stats.completed_tests;
+                document.getElementById('daysRegistered').textContent = userProfile.account_stats.days_registered;
+            }
+        }
+
+        function renderAllTabs() {
+            renderPersonalInfo();
+            renderMedicalInfo();
+            renderSecuritySettings();
+            renderPreferences();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function renderPersonalInfo() {
+            const container = document.getElementById('personal-content');
+            if (!userProfile) {
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <form id="personalForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="${userProfile.full_name}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input type="tel" id="phoneNumber" value="${userProfile.phone_number}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" value="${userProfile.email || ''}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" rows="3">${userProfile.address || ''}</textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" value="${userProfile.age || ''}" min="0" max="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="Male" ${userProfile.gender === 'Male' ? 'selected' : ''}>Male</option>
+                                <option value="Female" ${userProfile.gender === 'Female' ? 'selected' : ''}>Female</option>
+                                <option value="Other" ${userProfile.gender === 'Other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bloodGroup">Blood Group</label>
+                            <select id="bloodGroup">
+                                <option value="A+" ${userProfile.blood_group === 'A+' ? 'selected' : ''}>A+</option>
+                                <option value="A-" ${userProfile.blood_group === 'A-' ? 'selected' : ''}>A-</option>
+                                <option value="B+" ${userProfile.blood_group === 'B+' ? 'selected' : ''}>B+</option>
+                                <option value="B-" ${userProfile.blood_group === 'B-' ? 'selected' : ''}>B-</option>
+                                <option value="AB+" ${userProfile.blood_group === 'AB+' ? 'selected' : ''}>AB+</option>
+                                <option value="AB-" ${userProfile.blood_group === 'AB-' ? 'selected' : ''}>AB-</option>
+                                <option value="O+" ${userProfile.blood_group === 'O+' ? 'selected' : ''}>O+</option>
+                                <option value="O-" ${userProfile.blood_group === 'O-' ? 'selected' : ''}>O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyContact">Emergency Contact</label>
+                            <input type="tel" id="emergencyContact" value="${userProfile.emergency_contact ? userProfile.emergency_contact.phone : ''}" placeholder="Emergency contact number">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Update Personal Information</button>
+                </form>
+            `;
+
+            // Add form submission handler
+            document.getElementById('personalForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await updatePersonalInfo();
+            });
+        }
+
+        function renderMedicalInfo() {
+            const container = document.getElementById('medical-content');
+            if (!userProfile) {
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <form id="medicalForm">
+                    <div class="form-group">
+                        <label for="allergies">Allergies</label>
+                        <textarea id="allergies" rows="3" placeholder="List any known allergies or 'None'">${userProfile.medical_history ? userProfile.medical_history.allergies || '' : ''}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="chronicConditions">Chronic Conditions</label>
+                        <textarea id="chronicConditions" rows="3" placeholder="List any chronic medical conditions or 'None'">${userProfile.medical_history ? userProfile.medical_history.chronic_conditions || '' : ''}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentMedications">Current Medications</label>
+                        <textarea id="currentMedications" rows="3" placeholder="List current medications or 'None'">${userProfile.medical_history ? userProfile.medical_history.current_medications || '' : ''}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="surgeries">Previous Surgeries</label>
+                        <textarea id="surgeries" rows="3" placeholder="List previous surgeries or 'None'">${userProfile.medical_history ? userProfile.medical_history.surgeries || '' : ''}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Update Medical Information</button>
+                </form>
+            `;
+
+            // Add form submission handler
+            document.getElementById('medicalForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await updateMedicalInfo();
+            });
+        }
+
+        function renderSecuritySettings() {
+            const container = document.getElementById('security-content');
+            if (!userProfile) {
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <form id="securityForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="Enter current password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Change Password</button>
+                </form>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px; color: #dc3545;">Danger Zone</h3>
+                    <div class="info-card">
+                        <div class="info-label">Account Deletion</div>
+                        <div class="info-value">Once you delete your account, there is no going back. Please be certain.</div>
+                        <button class="submit-button" style="background: #dc3545; margin-top: 10px;" onclick="deleteAccount()">Delete Account</button>
+                    </div>
+                </div>
+            `;
+
+            // Add form submission handler
+            document.getElementById('securityForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await changePassword();
+            });
+        }
+
+        function renderPreferences() {
+            const container = document.getElementById('preferences-content');
+            if (!userProfile) {
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading...</p></div>';
+                return;
+            }
+
+            const prefs = userProfile.preferences || {};
+            container.innerHTML = `
+                <form id="preferencesForm">
+                    <div class="form-group">
+                        <label for="language">Preferred Language</label>
+                        <select id="language">
+                            <option value="English" ${prefs.language === 'English' ? 'selected' : ''}>English</option>
+                            <option value="Spanish" ${prefs.language === 'Spanish' ? 'selected' : ''}>Spanish</option>
+                            <option value="French" ${prefs.language === 'French' ? 'selected' : ''}>French</option>
+                            <option value="German" ${prefs.language === 'German' ? 'selected' : ''}>German</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="notifications" ${prefs.notifications ? 'checked' : ''}>
+                            Enable Push Notifications
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="emailUpdates" ${prefs.email_updates ? 'checked' : ''}>
+                            Receive Email Updates
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="smsReminders" ${prefs.sms_reminders ? 'checked' : ''}>
+                            Receive SMS Reminders
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Update Preferences</button>
+                </form>
+            `;
+
+            // Add form submission handler
+            document.getElementById('preferencesForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await updatePreferences();
+            });
+        }
+
+        async function updatePersonalInfo() {
+            const submitButton = document.querySelector('#personalForm .submit-button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Updating...';
+            
+            try {
+                const formData = {
+                    full_name: document.getElementById('fullName').value,
+                    phone_number: document.getElementById('phoneNumber').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    age: document.getElementById('age').value,
+                    gender: document.getElementById('gender').value,
+                    blood_group: document.getElementById('bloodGroup').value,
+                    emergency_contact: document.getElementById('emergencyContact').value
+                };
+                
+                await API.updateUserProfile(formData);
+                Utils.showSuccess('Personal information updated successfully!');
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Update Personal Information';
+            }
+        }
+
+        async function updateMedicalInfo() {
+            const submitButton = document.querySelector('#medicalForm .submit-button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Updating...';
+            
+            try {
+                const formData = {
+                    allergies: document.getElementById('allergies').value,
+                    chronic_conditions: document.getElementById('chronicConditions').value,
+                    current_medications: document.getElementById('currentMedications').value,
+                    surgeries: document.getElementById('surgeries').value
+                };
+                
+                await API.updateMedicalInfo(formData);
+                Utils.showSuccess('Medical information updated successfully!');
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Update Medical Information';
+            }
+        }
+
+        async function changePassword() {
+            const submitButton = document.querySelector('#securityForm .submit-button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Changing...';
+            
+            try {
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    throw new Error('New passwords do not match');
+                }
+                
+                await API.changePassword(currentPassword, newPassword);
+                Utils.showSuccess('Password changed successfully!');
+                
+                // Clear form
+                document.getElementById('securityForm').reset();
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Change Password';
+            }
+        }
+
+        async function updatePreferences() {
+            const submitButton = document.querySelector('#preferencesForm .submit-button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Updating...';
+            
+            try {
+                const formData = {
+                    language: document.getElementById('language').value,
+                    notifications: document.getElementById('notifications').checked,
+                    email_updates: document.getElementById('emailUpdates').checked,
+                    sms_reminders: document.getElementById('smsReminders').checked
+                };
+                
+                await API.updatePreferences(formData);
+                Utils.showSuccess('Preferences updated successfully!');
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Update Preferences';
+            }
+        }
+
+        function goBack() {
+            window.location.href = '../dashboard/dashboard.html';
+        }
+
+        function changePassword() {
+            switchTab('security');
+        }
+
+        function privacySettings() {
+            Utils.showSuccess('Privacy settings opened!');
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
+                    Utils.showSuccess('Account deletion request submitted. You will receive a confirmation email.');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

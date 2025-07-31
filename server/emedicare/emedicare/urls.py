@@ -16,17 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
+
+def home_redirect(request):
+    return redirect('admin:index')
 
 urlpatterns = [
+    path('', home_redirect, name='home'),
     path('admin/', admin.site.urls),
-    path('api/userauth/', include('userauth.urls')),
-    path('api/appointment/', include('appointment.urls')),
+    path('api/register/', include('userauth.register_urls')),
+    path('api/token/', include('userauth.login_urls')),
+    path('api/user/', include('userauth.profile_urls')),
+    path('api/appointments/', include('appointment.urls')),
+    path('api/packages/', include('package.urls')),
     path('api/clinical/', include('clinical.urls')),
-    path('api/notification/', include('notification.urls')),
-    path('api/package/', include('package.urls')),
     path('api/pharmacy/', include('pharmacy.urls')),
-
-    
 ]
 
 

@@ -28,6 +28,26 @@
         .header {
             text-align: center;
             margin-bottom: 60px;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #004AAD;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: #1C7EB7;
         }
 
         .header h1 {
@@ -427,6 +447,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <button class="back-button" onclick="goBack()">← Back to Dashboard</button>
             <h1>Health Packages</h1>
             <p>Comprehensive healthcare solutions designed for early detection, prevention, and optimal health management</p>
         </div>
@@ -637,8 +658,54 @@
         </div>
     </div>
 
+    <!-- API Connection Script -->
+    <script src="../js/api.js"></script>
     <script>
         let selectedPackage = '';
+        let packages = [];
+
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Utils.isLoggedIn()) {
+                Utils.showError('Please login first');
+                window.location.href = '../userauth/login.html';
+                return;
+            }
+
+            // Load packages from API
+            loadPackages();
+        });
+
+        // Load packages from API
+        async function loadPackages() {
+            try {
+                packages = await API.getPackages();
+                console.log('Packages loaded:', packages);
+            } catch (error) {
+                console.error('Error loading packages:', error);
+                // Use default packages if API fails
+                packages = [
+                    {
+                        name: 'Basic Health Check',
+                        price: 99,
+                        description: 'Essential health screening for adults',
+                        features: ['Blood Pressure', 'Blood Sugar', 'BMI', 'General Consultation']
+                    },
+                    {
+                        name: 'Comprehensive Health Package',
+                        price: 199,
+                        description: 'Complete health assessment with detailed reports',
+                        features: ['Complete Blood Count', 'Liver Function', 'Kidney Function', 'ECG', 'Chest X-Ray']
+                    },
+                    {
+                        name: 'Premium Wellness Package',
+                        price: 299,
+                        description: 'Advanced screening with specialist consultation',
+                        features: ['All Basic Tests', 'Cardiac Screening', 'Cancer Markers', 'Specialist Consultation']
+                    }
+                ];
+            }
+        }
 
         function openBookingModal(packageName) {
             selectedPackage = packageName;
@@ -672,46 +739,43 @@
         });
 
         // Form submission
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = {
-                package: selectedPackage,
-                patientName: document.getElementById('patientName').value,
-                age: document.getElementById('age').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                address: document.getElementById('address').value,
-                preferredDate: document.getElementById('preferredDate').value,
-                preferredTime: document.getElementById('preferredTime').value,
-                medicalHistory: document.getElementById('medicalHistory').value,
-                emergencyContact: document.getElementById('emergencyContact').value
-            };
+            const submitButton = document.querySelector('.submit-button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Processing...';
             
-            const bookingNumber = 'PKG' + Date.now().toString().slice(-6);
-            
-            alert(`Health Package Booking Confirmed! 🎉
-
-📋 Package: ${formData.package}
-👤 Patient: ${formData.patientName}
-📅 Date: ${formData.preferredDate}
-🕐 Time: ${formData.preferredTime}
-📞 Contact: ${formData.phone}
-🆔 Booking ID: #${bookingNumber}
-
-📧 Confirmation Details:
-• Confirmation email sent to ${formData.email}
-• Please arrive 30 minutes before your appointment
-• Fasting required for 10-12 hours before tests
-• Bring a valid ID and insurance card
-• Complete all forms before arrival
-
-For any queries, call us at +1 (555) 123-4567
-
-Thank you for choosing Leeyana Hospital! 🏥`);
-            
-            closeBookingModal();
+            try {
+                const formData = {
+                    package_name: selectedPackage,
+                    patient_name: document.getElementById('patientName').value,
+                    age: document.getElementById('age').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    preferred_date: document.getElementById('preferredDate').value,
+                    preferred_time: document.getElementById('preferredTime').value,
+                    medical_history: document.getElementById('medicalHistory').value,
+                    emergency_contact: document.getElementById('emergencyContact').value
+                };
+                
+                await API.buyPackage(formData);
+                
+                Utils.showSuccess('Health package booked successfully! You will receive a confirmation email shortly.');
+                closeBookingModal();
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Book Package';
+            }
         });
+
+        function goBack() {
+            window.location.href = '../dashboard/dashboard.html';
+        }
 
         // Smooth scrolling animation
         document.addEventListener('DOMContentLoaded', function() {

@@ -962,9 +962,32 @@
         </div>
     </div>
 
+    <!-- API Connection Script -->
+    <script src="../js/api.js"></script>
     <script>
-        // Enhanced medicine data with realistic medicine images
-        const medicines = [
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Utils.isLoggedIn()) {
+                Utils.showError('Please login first');
+                window.location.href = '../userauth/login.html';
+                return;
+            }
+
+            // Load medicines from API
+            loadMedicines();
+        });
+
+        // Load medicines from API
+        async function loadMedicines() {
+            try {
+                const response = await API.getMedicines();
+                medicines = response;
+                console.log('Medicines loaded:', medicines);
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading medicines:', error);
+                // Use default medicines if API fails
+                medicines = [
             {
                 id: 1,
                 name: "Paracetamol 500mg",
@@ -1140,7 +1163,7 @@
         let currentBuyNowItem = null;
 
         function goBack() {
-            alert('Navigating back to main dashboard...');
+            window.location.href = '../dashboard/dashboard.html';
         }
 
         function renderProducts() {
@@ -1558,49 +1581,43 @@ Thank you for choosing Leeyana Pharmacy!`);
         document.getElementById('searchInput').addEventListener('input', applyFilters);
 
         // Request form submission
-        document.getElementById('requestForm').addEventListener('submit', function(e) {
+        document.getElementById('requestForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = {
-                patientName: document.getElementById('patientName').value,
-                contactNumber: document.getElementById('contactNumber').value,
-                medicineName: document.getElementById('medicineName').value,
-                dosage: document.getElementById('dosage').value,
-                quantity: document.getElementById('quantity').value,
-                urgency: document.getElementById('urgency').value,
-                formType: document.getElementById('formType').value,
-                doctorName: document.getElementById('doctorName').value,
-                medicalCondition: document.getElementById('medicalCondition').value,
-                patientAge: document.getElementById('patientAge').value,
-                allergies: document.getElementById('allergies').value,
-                additionalNotes: document.getElementById('additionalNotes').value
-            };
+            const submitButton = document.querySelector('#requestForm button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
             
-            const requestNumber = 'REQ' + Date.now().toString().slice(-6);
-            
-            alert(`Medicine Request Submitted Successfully!
-
-Request Number: #${requestNumber}
-Patient: ${formData.patientName}
-Medicine: ${formData.medicineName} (${formData.dosage})
-Quantity: ${formData.quantity}
-Urgency: ${formData.urgency}
-
-Our pharmacy team will:
-1. Check medicine availability
-2. Verify prescription requirements (if applicable)
-3. Contact you within 24 hours with:
-   • Availability confirmation
-   • Pricing information
-   • Pickup instructions
-
-Contact: ${formData.contactNumber}
-
-Thank you for choosing Leeyana Pharmacy!`);
-            
-            // Reset form
-            document.getElementById('requestForm').reset();
-            closeRequestModal();
+            try {
+                const formData = {
+                    patient_name: document.getElementById('patientName').value,
+                    contact_number: document.getElementById('contactNumber').value,
+                    medicine_name: document.getElementById('medicineName').value,
+                    dosage: document.getElementById('dosage').value,
+                    quantity: document.getElementById('quantity').value,
+                    urgency: document.getElementById('urgency').value,
+                    form_type: document.getElementById('formType').value,
+                    doctor_name: document.getElementById('doctorName').value,
+                    medical_condition: document.getElementById('medicalCondition').value,
+                    patient_age: document.getElementById('patientAge').value,
+                    allergies: document.getElementById('allergies').value,
+                    additional_notes: document.getElementById('additionalNotes').value
+                };
+                
+                await API.requestMedicine(formData);
+                
+                Utils.showSuccess('Medicine request submitted successfully! Our pharmacy team will contact you within 24 hours.');
+                
+                // Reset form
+                document.getElementById('requestForm').reset();
+                closeRequestModal();
+                
+            } catch (error) {
+                Utils.showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Request';
+            }
         });
 
         // Close modals when clicking outside

@@ -1451,5 +1451,47 @@
       observer.observe(el);
     });
   </script>
+
+  <!-- API Connection Script -->
+  <script src="js/api.js"></script>
+  <script>
+    // Home page API connections
+    document.addEventListener('DOMContentLoaded', function() {
+      // Login button functionality
+      const heroLoginBtn = document.getElementById('heroLoginBtn');
+      if (heroLoginBtn) {
+        heroLoginBtn.addEventListener('click', function() {
+          Utils.navigateTo('userauth/login.html');
+        });
+      }
+
+      // Register button functionality
+      const heroRegisterBtn = document.getElementById('heroRegisterBtn');
+      if (heroRegisterBtn) {
+        heroRegisterBtn.addEventListener('click', function() {
+          Utils.navigateTo('userauth/register.html');
+        });
+      }
+
+      // Appointment button functionality
+      const appointmentBtn = document.querySelector('.appointment-btn');
+      if (appointmentBtn) {
+        appointmentBtn.addEventListener('click', function() {
+          if (Utils.isLoggedIn()) {
+            Utils.navigateTo('userauth/appointment.html');
+          } else {
+            Utils.showError('Please login first to book an appointment');
+            Utils.navigateTo('userauth/login.html');
+          }
+        });
+      }
+
+      // Check if user is already logged in
+      if (Utils.isLoggedIn()) {
+        console.log('User is logged in');
+        // You can update UI here to show user info
+      }
+    });
+  </script>
 </body>
 </html>

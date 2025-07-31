@@ -523,11 +523,11 @@
         };
 
         function goBack() {
-            console.log('Navigate back to dashboard');
+            window.location.href = '../dashboard/dashboard.html';
         }
 
         function goToAppointments() {
-            console.log('Navigate to appointments management');
+            window.location.href = '../dashboard/dashboard.html';
         }
 
         // Set minimum date to today
@@ -657,38 +657,47 @@
             errorElement.style.display = 'block';
         }
 
+    <!-- API Connection Script -->
+    <script src="../js/api.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Utils.isLoggedIn()) {
+                Utils.showError('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+        });
+
         // Form submission
-        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (validateForm()) {
                 const formData = {
-                    patientName: document.getElementById('patientName').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
                     department: document.getElementById('department').value,
-                    doctor: document.getElementById('doctor').value || 'any',
-                    appointmentDate: document.getElementById('appointmentDate').value,
-                    appointmentTime: document.querySelector('input[name="appointmentTime"]:checked').value,
-                    priority: document.querySelector('input[name="priority"]:checked').value,
                     symptoms: document.getElementById('symptoms').value.trim(),
-                    notes: document.getElementById('notes').value.trim()
+                    preferred_date: document.getElementById('appointmentDate').value,
+                    preferred_time: document.querySelector('input[name="appointmentTime"]:checked').value,
+                    additional_notes: document.getElementById('notes').value.trim()
                 };
-                
-                console.log('Appointment data:', formData);
                 
                 // Disable button during submission
                 const submitButton = document.querySelector('.appointment-button');
                 submitButton.disabled = true;
                 submitButton.textContent = 'Booking Appointment...';
                 
-                // Simulate API call
-                setTimeout(() => {
-                    alert('Appointment booked successfully! You will receive a confirmation message shortly.');
+                try {
+                    await API.bookAppointment(formData);
+                    Utils.showSuccess('Appointment booked successfully! You will receive a confirmation message shortly.');
                     submitButton.disabled = false;
                     submitButton.textContent = 'Book Appointment';
-                    // Redirect or reset form
                     document.getElementById('appointmentForm').reset();
-                }, 2000);
+                } catch (error) {
+                    Utils.showError(error.message);
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Book Appointment';
+                }
             }
         });
     </script>

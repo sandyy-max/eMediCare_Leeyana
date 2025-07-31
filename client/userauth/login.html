@@ -231,31 +231,40 @@
         </div>
     </div>
 
+    <!-- API Connection Script -->
+    <script src="../js/api.js"></script>
     <script>
         function goBack() {
-            // Add navigation logic here
-            console.log('Navigate back to home');
-            // window.history.back(); // or redirect to home page
+            window.location.href = '../home.html';
         }
 
         function goToRegister() {
-            // Add navigation logic here
-            console.log('Navigate to register page');
-            // window.location.href = 'register.html';
+            window.location.href = 'register.html';
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
             
             if (phone && password) {
-                console.log('Login attempt:', { phone, password });
-                // Add your login logic here
-                alert('Login functionality would be implemented here');
+                try {
+                    const response = await API.login({
+                        phone_number: phone,
+                        password: password
+                    });
+                    
+                    // Store the token
+                    Utils.setToken(response.tokens.access);
+                    
+                    Utils.showSuccess('Login successful!');
+                    window.location.href = '../dashboard/dashboard.html';
+                } catch (error) {
+                    Utils.showError(error.message);
+                }
             } else {
-                alert('Please fill in all fields');
+                Utils.showError('Please fill in all fields');
             }
         });
     </script>
