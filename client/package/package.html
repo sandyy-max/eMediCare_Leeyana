@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leeyana Hospital - Health Packages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #004AAD;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #A1BCCC;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .package-card {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 16px;
+            padding: 40px 32px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+        }
+
+        .package-card:hover {
+            transform: translateY(-8px);
+            border-color: #48ADE7;
+            box-shadow: 0 20px 40px rgba(0, 74, 173, 0.15);
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+        }
+
+        .package-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(72, 173, 231, 0.1);
+            border-radius: 20px;
+            border: 2px solid #DDE6EE;
+        }
+
+        .package-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: #004AAD;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .package-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .package-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #004AAD;
+        }
+
+        .package-subtitle {
+            font-size: 1rem;
+            color: #48ADE7;
+            margin-bottom: 20px;
+        }
+
+        .package-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .price-original {
+            font-size: 1.2rem;
+            color: #A1BCCC;
+            text-decoration: line-through;
+        }
+
+        .price-current {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #004AAD;
+        }
+
+        .price-duration {
+            font-size: 0.9rem;
+            color: #A1BCCC;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #1C7EB7 0%, #004AAD 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 74, 173, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid #48ADE7;
+            color: #004AAD;
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(72, 173, 231, 0.1);
+            border-color: #004AAD;
+        }
+
+        .features-section {
+            text-align: left;
+        }
+
+        .features-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #004AAD;
+        }
+
+        .features-list {
+            list-style: none;
+            space-y: 12px;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #1C7EB7;
+            line-height: 1.5;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: #48ADE7;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #48ADE7 0%, #1C7EB7 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 74, 173, 0.3);
+        }
+
+        .info-section {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+        }
+
+        .info-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #004AAD;
+        }
+
+        .info-section p {
+            color: #1C7EB7;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #48ADE7;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .packages-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .package-card {
+                padding: 32px 24px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 74, 173, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #DDE6EE;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 74, 173, 0.15);
+        }
+
+        .modal-header {
+            padding: 24px 32px;
+            border-bottom: 2px solid #DDE6EE;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #004AAD;
+        }
+
+        .close {
+            color: #A1BCCC;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #004AAD;
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #004AAD;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #DDE6EE;
+            background: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #004AAD;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #48ADE7;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(135deg, #1C7EB7 0%, #004AAD 100%);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Health Packages</h1>
+            <p>Comprehensive healthcare solutions designed for early detection, prevention, and optimal health management</p>
+        </div>
+
+        <div class="packages-grid">
+            <!-- Cardiology Package -->
+            <div class="package-card">
+                <div class="package-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <div class="package-header">
+                    <h2 class="package-title">Cardiology</h2>
+                    <p class="package-subtitle">Complete heart health assessment</p>
+                    <div class="package-price">
+                        <span class="price-original">$180</span>
+                        <span class="price-current">$149</span>
+                    </div>
+                    <div class="price-duration">comprehensive package</div>
+                </div>
+                <button class="cta-button" onclick="openBookingModal('Cardiology Package')">Book Package</button>
+                <div class="features-section">
+                    <h3 class="features-title">Everything included:</h3>
+                    <ul class="features-list">
+                        <li>ECG (Electrocardiogram)</li>
+                        <li>2D Echocardiography</li>
+                        <li>Stress Test (TMT)</li>
+                        <li>Lipid Profile Complete</li>
+                        <li>Cardiac Enzymes (Troponin, CK-MB)</li>
+                        <li>Blood Pressure Monitoring</li>
+                        <li>Chest X-Ray</li>
+                        <li>Cardiologist Consultation</li>
+                        <li>Detailed Report & Recommendations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pulmonology Package -->
+            <div class="package-card">
+                <div class="popular-badge">Most Popular</div>
+                <div class="package-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 9.739 9 11 5.16-1.261 9-5.45 9-11V7L12 2z"/>
+                        <path d="M8 11h8M8 15h5M12 7v10"/>
+                    </svg>
+                </div>
+                <div class="package-header">
+                    <h2 class="package-title">Pulmonology</h2>
+                    <p class="package-subtitle">Advanced respiratory system evaluation</p>
+                    <div class="package-price">
+                        <span class="price-original">$220</span>
+                        <span class="price-current">$179</span>
+                    </div>
+                    <div class="price-duration">comprehensive package</div>
+                </div>
+                <button class="cta-button" onclick="openBookingModal('Pulmonology Package')">Book Package</button>
+                <div class="features-section">
+                    <h3 class="features-title">Everything included:</h3>
+                    <ul class="features-list">
+                        <li>Pulmonary Function Test (PFT)</li>
+                        <li>Chest X-Ray (PA & Lateral)</li>
+                        <li>High Resolution CT Chest</li>
+                        <li>Arterial Blood Gas Analysis</li>
+                        <li>Peak Flow Meter Test</li>
+                        <li>Oxygen Saturation Monitoring</li>
+                        <li>Sputum Analysis & Culture</li>
+                        <li>Allergy Testing Panel</li>
+                        <li>Pulmonologist Consultation</li>
+                        <li>Personalized Treatment Plan</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Full Body Check Package -->
+            <div class="package-card">
+                <div class="premium-badge">Premium</div>
+                <div class="package-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                        <path d="M8 12h8M12 8v8"/>
+                    </svg>
+                </div>
+                <div class="package-header">
+                    <h2 class="package-title">Full Body Check</h2>
+                    <p class="package-subtitle">Complete health screening & wellness assessment</p>
+                    <div class="package-price">
+                        <span class="price-original">$350</span>
+                        <span class="price-current">$299</span>
+                    </div>
+                    <div class="price-duration">comprehensive package</div>
+                </div>
+                <button class="cta-button secondary" onclick="openBookingModal('Full Body Check Package')">Book Premium Package</button>
+                <div class="features-section">
+                    <h3 class="features-title">Everything included:</h3>
+                    <ul class="features-list">
+                        <li>Complete Blood Count (CBC)</li>
+                        <li>Comprehensive Metabolic Panel</li>
+                        <li>Lipid Profile & Diabetes Screening</li>
+                        <li>Liver & Kidney Function Tests</li>
+                        <li>Thyroid Function Tests</li>
+                        <li>Vitamin D & B12 Levels</li>
+                        <li>Cancer Markers Screening</li>
+                        <li>ECG & Chest X-Ray</li>
+                        <li>Ultrasound Abdomen & Pelvis</li>
+                        <li>BMI & Body Composition Analysis</li>
+                        <li>Multi-specialist Consultations</li>
+                        <li>Detailed Health Report</li>
+                        <li>Nutritionist Consultation</li>
+                        <li>1-year Health Tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>Why Choose Leeyana Hospital Health Packages?</h3>
+            <p>Our comprehensive health packages are designed by medical experts to provide thorough health assessments using state-of-the-art equipment and advanced diagnostic technologies.</p>
+            <p>Each package includes consultation with specialist doctors, detailed reports, and personalized health recommendations to help you maintain optimal health.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>+1 (555) 123-4567</span>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>packages@leeyana.com</span>
+                </div>
+                <div class="contact-item">
+                    <span>🕒</span>
+                    <span>Mon-Sat: 8AM-6PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Book Health Package</h2>
+                <button class="close" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientName">Full Name:</label>
+                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" placeholder="Age" min="1" max="120" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" placeholder="Enter your complete address" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date:</label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time:</label>
+                            <select id="preferredTime" name="preferredTime" required>
+                                <option value="">Select time slot</option>
+                                <option value="8:00 AM">8:00 AM</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicalHistory">Medical History (if any):</label>
+                        <textarea id="medicalHistory" name="medicalHistory" placeholder="Please mention any existing medical conditions, medications, or allergies"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact:</label>
+                        <input type="text" id="emergencyContact" name="emergencyContact" placeholder="Name and phone number" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPackage = '';
+
+        function openBookingModal(packageName) {
+            selectedPackage = packageName;
+            document.getElementById('modalTitle').textContent = `Book ${packageName}`;
+            document.getElementById('bookingModal').style.display = 'block';
+            
+            // Set minimum date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('preferredDate').min = tomorrow.toISOString().split('T')[0];
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingForm').reset();
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeBookingModal();
+            }
+        });
+
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeBookingModal();
+            }
+        });
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                package: selectedPackage,
+                patientName: document.getElementById('patientName').value,
+                age: document.getElementById('age').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                preferredDate: document.getElementById('preferredDate').value,
+                preferredTime: document.getElementById('preferredTime').value,
+                medicalHistory: document.getElementById('medicalHistory').value,
+                emergencyContact: document.getElementById('emergencyContact').value
+            };
+            
+            const bookingNumber = 'PKG' + Date.now().toString().slice(-6);
+            
+            alert(`Health Package Booking Confirmed! 🎉
+
+📋 Package: ${formData.package}
+👤 Patient: ${formData.patientName}
+📅 Date: ${formData.preferredDate}
+🕐 Time: ${formData.preferredTime}
+📞 Contact: ${formData.phone}
+🆔 Booking ID: #${bookingNumber}
+
+📧 Confirmation Details:
+• Confirmation email sent to ${formData.email}
+• Please arrive 30 minutes before your appointment
+• Fasting required for 10-12 hours before tests
+• Bring a valid ID and insurance card
+• Complete all forms before arrival
+
+For any queries, call us at +1 (555) 123-4567
+
+Thank you for choosing Leeyana Hospital! 🏥`);
+            
+            closeBookingModal();
+        });
+
+        // Smooth scrolling animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.package-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leeyana Hospital - Patient Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #004AAD;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 3px solid #004AAD;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo-section {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid #DDE6EE;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            color: white;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .logo svg {
+            width: 35px;
+            height: 35px;
+            stroke: #004AAD;
+            fill: none;
+            stroke-width: 2.5;
+        }
+
+        .hospital-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .hospital-tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 25px;
+            color: #1C7EB7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            margin: 2px 0;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(72, 173, 231, 0.1);
+            border-left-color: #48ADE7;
+            color: #004AAD;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(0, 74, 173, 0.1) 0%, rgba(72, 173, 231, 0.15) 100%);
+            border-left-color: #004AAD;
+            color: #004AAD;
+            font-weight: 600;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            margin-right: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .header {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+        }
+
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .welcome-section p {
+            color: #48ADE7;
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 0 0 auto;
+            margin-bottom: 8px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #004AAD;
+            margin-bottom: 4px;
+        }
+
+        .user-id {
+            font-size: 0.9rem;
+            color: #A1BCCC;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            border-color: #48ADE7;
+            box-shadow: 0 15px 35px rgba(0, 74, 173, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(72, 173, 231, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .card-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: #004AAD;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #004AAD;
+        }
+
+        .card-content {
+            color: #1C7EB7;
+            line-height: 1.6;
+        }
+
+        .card-action {
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #1C7EB7 0%, #004AAD 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 74, 173, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #48ADE7;
+            color: #004AAD;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(72, 173, 231, 0.1);
+            border-color: #004AAD;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 74, 173, 0.06);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 74, 173, 0.12);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #004AAD;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #48ADE7;
+            font-weight: 500;
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            background: white;
+            border: 2px solid #DDE6EE;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+        }
+
+        .activity-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #004AAD;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-title svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            stroke: #48ADE7;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #DDE6EE;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(72, 173, 231, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .activity-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #004AAD;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-text {
+            color: #1C7EB7;
+            margin-bottom: 4px;
+        }
+
+        .activity-date {
+            font-size: 0.9rem;
+            color: #A1BCCC;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            background: #004AAD;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-section">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </div>
+                <div class="hospital-name">LEEYANA</div>
+                <div class="hospital-tagline">Healthcare Excellence</div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" onclick="showSection('home')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9,22 9,12 15,12 15,22"/>
+                    </svg>
+                    Home
+                </a>
+
+                <a href="#" class="nav-item" onclick="showSection('appointment')">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Appointment
+                </a>
+
+                <a href="#" class="nav-item" onclick="showSection('package')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    Packages
+                </a>
+
+                <a href="#" class="nav-item" onclick="showSection('medical-history')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    Medical History
+                </a>
+
+                <a href="#" class="nav-item" onclick="showSection('pharmacy')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4.64 7.64a2 2 0 0 1 2.83-2.83l4.95 4.95c.58.58 1.5.58 2.08 0l4.95-4.95a2 2 0 0 1 2.83 2.83l-4.95 4.95c-.58.58-.58 1.5 0 2.08l4.95 4.95a2 2 0 0 1-2.83 2.83l-4.95-4.95c-.58-.58-1.5-.58-2.08 0l-4.95 4.95a2 2 0 0 1-2.83-2.83l4.95-4.95c.58-.58.58-1.5 0-2.08L4.64 7.64z"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                    Pharmacy
+                </a>
+
+                <a href="#" class="nav-item" onclick="showSection('profile')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Profile
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="welcome-section">
+                    <h1>Welcome Back, John!</h1>
+                    <p>Your health journey continues here</p>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-name">John Doe</div>
+                    <div class="user-id">Patient ID: #LH2024001</div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="home-section">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Upcoming Appointments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Medical Records</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Active Prescriptions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Health Packages</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Next Appointment</h3>
+                        </div>
+                        <div class="card-content">
+                            <p><strong>Dr. Sarah Johnson</strong> - Cardiology</p>
+                            <p>August 5, 2025 at 10:30 AM</p>
+                            <p>Annual heart checkup and consultation</p>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn">View Details</button>
+                            <button class="btn btn-secondary">Reschedule</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4.64 7.64a2 2 0 0 1 2.83-2.83l4.95 4.95c.58.58 1.5.58 2.08 0l4.95-4.95a2 2 0 0 1 2.83 2.83l-4.95 4.95c-.58.58-.58 1.5 0 2.08l4.95 4.95a2 2 0 0 1-2.83 2.83l-4.95-4.95c-.58-.58-1.5-.58-2.08 0l-4.95 4.95a2 2 0 0 1-2.83-2.83l4.95-4.95c.58-.58.58-1.5 0-2.08L4.64 7.64z"/>
+                                    <circle cx="12" cy="12" r="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Current Medications</h3>
+                        </div>
+                        <div class="card-content">
+                            <p><strong>Aspirin 81mg</strong> - Once daily</p>
+                            <p><strong>Lisinopril 10mg</strong> - Once daily</p>
+                            <p>2 active prescriptions</p>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn">Order Refill</button>
+                            <button class="btn btn-secondary">View All</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Health Package</h3>
+                        </div>
+                        <div class="card-content">
+                            <p><strong>Full Body Check Package</strong></p>
+                            <p>Status: Completed (July 15, 2025)</p>
+                            <p>All results available in reports</p>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn">View Results</button>
+                            <button class="btn btn-secondary">Book New</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Recent Test Results</h3>
+                        </div>
+                        <div class="card-content">
+                            <p><strong>Blood Work</strong> - July 20, 2025</p>
+                            <p><strong>ECG</strong> - July 15, 2025</p>
+                            <p>All results within normal range</p>
+                        </div>
+                        <div class="card-action">
+                            <button class="btn">View Reports</button>
+                            <button class="btn btn-secondary">Download</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-list">
+                    <h3 class="activity-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                        </svg>
+                        Recent Activity
+                    </h3>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-text">Full Body Check Package completed successfully</div>
+                            <div class="activity-date">July 12, 2025 - 4:15 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Sections (Hidden by default) -->
+            <div id="appointment-section" style="display: none;">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Appointment Management</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Book new appointments, view upcoming appointments, and manage your schedule.</p>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn">Book New Appointment</button>
+                        <button class="btn btn-secondary">View All Appointments</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="package-section" style="display: none;">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Health Packages</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Explore comprehensive health packages designed for prevention and early detection.</p>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn">Browse Packages</button>
+                        <button class="btn btn-secondary">My Package History</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="medical-history-section" style="display: none;">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Medical History</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Access your complete medical records, test results, and treatment history.</p>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn">View Records</button>
+                        <button class="btn btn-secondary">Download Reports</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pharmacy-section" style="display: none;">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4.64 7.64a2 2 0 0 1 2.83-2.83l4.95 4.95c.58.58 1.5.58 2.08 0l4.95-4.95a2 2 0 0 1 2.83 2.83l-4.95 4.95c-.58.58-.58 1.5 0 2.08l4.95 4.95a2 2 0 0 1-2.83 2.83l-4.95-4.95c-.58-.58-1.5-.58-2.08 0l-4.95 4.95a2 2 0 0 1-2.83-2.83l4.95-4.95c.58-.58.58-1.5 0-2.08L4.64 7.64z"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Pharmacy Services</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Manage prescriptions, order refills, and track medication delivery.</p>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn">Order Refill</button>
+                        <button class="btn btn-secondary">Prescription History</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile-section" style="display: none;">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Profile Settings</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Update your personal information, contact details, and account preferences.</p>
+                    </div>
+                    <div class="card-action">
+                        <button class="btn">Edit Profile</button>
+                        <button class="btn btn-secondary">Privacy Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = ['home', 'appointment', 'package', 'medical-history', 'pharmacy', 'profile'];
+            sections.forEach(section => {
+                const element = document.getElementById(section + '-section');
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionName + '-section');
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Animation on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.dashboard-card, .stat-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>">July 20, 2025 - 2:30 PM</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-text">Appointment scheduled with Dr. Sarah Johnson</div>
+                            <div class="activity-date">July 18, 2025 - 11:45 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4.64 7.64a2 2 0 0 1 2.83-2.83l4.95 4.95c.58.58 1.5.58 2.08 0l4.95-4.95a2 2 0 0 1 2.83 2.83l-4.95 4.95c-.58.58-.58 1.5 0 2.08l4.95 4.95a2 2 0 0 1-2.83 2.83l-4.95-4.95c-.58-.58-1.5-.58-2.08 0l-4.95 4.95a2 2 0 0 1-2.83-2.83l4.95-4.95c.58-.58.58-1.5 0-2.08L4.64 7.64z"/>
+                            </svg>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-text">Prescription refill ordered for Lisinopril</div>
+                            <div class="activity-date">July 15, 2025 - 9:20 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-text">Lab results uploaded to your medical records</div>
+                            <div class="activity-date

@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'clinical',
     'notification',
     'package',
+    'pharmacy',
     # 'corsheaders',
 ]
 

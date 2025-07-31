@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leeyana - Book Appointment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 0;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            color: #333;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 300;
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4A90E2;
+            letter-spacing: 1px;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-group label .optional {
+            font-weight: 400;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #E8F4FD;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: background-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            background: #D6EDFA;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #999;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .time-slot {
+            position: relative;
+        }
+
+        .time-slot input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .time-slot label {
+            display: block;
+            padding: 10px 8px;
+            background: #E8F4FD;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .time-slot input[type="radio"]:checked + label {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .time-slot input[type="radio"]:focus + label {
+            background: #D6EDFA;
+        }
+
+        .time-slot input[type="radio"]:checked:focus + label {
+            background: #357ABD;
+        }
+
+        .time-slot.unavailable label {
+            background: #f8f9fa;
+            color: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .time-slot.unavailable input[type="radio"] {
+            cursor: not-allowed;
+        }
+
+        .priority-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 6px;
+        }
+
+        .priority-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .priority-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .priority-option label {
+            display: block;
+            padding: 12px;
+            background: #E8F4FD;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .priority-option input[type="radio"]:checked + label {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .priority-option.urgent input[type="radio"]:checked + label {
+            background: #dc3545;
+        }
+
+        .appointment-button {
+            width: 100%;
+            padding: 15px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 25px 0 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .appointment-button:hover {
+            background: #357ABD;
+        }
+
+        .appointment-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .back-link a {
+            color: #4A90E2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .department-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #666;
+            text-align: left;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+                max-height: 95vh;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .priority-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-button" onclick="goBack()">
+                ← Back To Dashboard
+            </button>
+        </div>
+        
+        <div class="content">
+            <h1 class="title">Book Appointment</h1>
+            
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="https://via.placeholder.com/70x70/4A90E2/ffffff?text=LOGO" alt="Leeyana Logo" id="logoImage">
+                </div>
+                <div class="logo-text">LEEYANA</div>
+                <div class="logo-subtitle">MEDICAL SOLUTIONS</div>
+            </div>
+            
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="patientName">Patient Name:</label>
+                    <input type="text" id="patientName" name="patientName" placeholder="Enter patient's full name" required>
+                    <div class="error-message" id="patientNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Contact Number:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department</option>
+                        <option value="general">General Medicine</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="gynecology">Gynecology</option>
+                        <option value="dermatology">Dermatology</option>
+                        <option value="ophthalmology">Ophthalmology</option>
+                        <option value="ent">ENT</option>
+                        <option value="neurology">Neurology</option>
+                        <option value="psychiatry">Psychiatry</option>
+                    </select>
+                    <div class="department-info" id="departmentInfo" style="display: none;"></div>
+                    <div class="error-message" id="departmentError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="doctor">Preferred Doctor <span class="optional">(Optional)</span>:</label>
+                    <select id="doctor" name="doctor">
+                        <option value="">Any Available Doctor</option>
+                    </select>
+                    <div class="error-message" id="doctorError"></div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointmentDate">Preferred Date:</label>
+                        <input type="date" id="appointmentDate" name="appointmentDate" required>
+                        <div class="error-message" id="appointmentDateError"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Preferred Time:</label>
+                    <div class="time-slots">
+                        <div class="time-slot">
+                            <input type="radio" id="time09" name="appointmentTime" value="09:00" required>
+                            <label for="time09">9:00 AM</label>
+                        </div>
+                        <div class="time-slot">
+                            <input type="radio" id="time10" name="appointmentTime" value="10:00" required>
+                            <label for="time10">10:00 AM</label>
+                        </div>
+                        <div class="time-slot">
+                            <input type="radio" id="time11" name="appointmentTime" value="11:00" required>
+                            <label for="time11">11:00 AM</label>
+                        </div>
+                        <div class="time-slot">
+                            <input type="radio" id="time14" name="appointmentTime" value="14:00" required>
+                            <label for="time14">2:00 PM</label>
+                        </div>
+                        <div class="time-slot">
+                            <input type="radio" id="time15" name="appointmentTime" value="15:00" required>
+                            <label for="time15">3:00 PM</label>
+                        </div>
+                        <div class="time-slot">
+                            <input type="radio" id="time16" name="appointmentTime" value="16:00" required>
+                            <label for="time16">4:00 PM</label>
+                        </div>
+                    </div>
+                    <div class="info-text">Time slots may vary based on doctor availability</div>
+                    <div class="error-message" id="appointmentTimeError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Priority Level:</label>
+                    <div class="priority-group">
+                        <div class="priority-option">
+                            <input type="radio" id="routine" name="priority" value="routine" required>
+                            <label for="routine">Routine</label>
+                        </div>
+                        <div class="priority-option urgent">
+                            <input type="radio" id="urgent" name="priority" value="urgent" required>
+                            <label for="urgent">Urgent</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="priorityError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="symptoms">Symptoms/Reason for Visit:</label>
+                    <textarea id="symptoms" name="symptoms" placeholder="Briefly describe your symptoms or reason for the appointment" required></textarea>
+                    <div class="info-text">This helps the doctor prepare for your visit</div>
+                    <div class="error-message" id="symptomsError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional Notes <span class="optional">(Optional)</span>:</label>
+                    <textarea id="notes" name="notes" placeholder="Any special requests or additional information"></textarea>
+                </div>
+                
+                <button type="submit" class="appointment-button">Book Appointment</button>
+            </form>
+            
+            <div class="back-link">
+                Need to cancel or reschedule? <a href="#" onclick="goToAppointments()">Manage Appointments</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Department information
+        const departmentInfo = {
+            general: "Consultation fee: $50 | Average wait time: 15-30 minutes",
+            cardiology: "Consultation fee: $120 | Specialist appointment | May require ECG",
+            orthopedics: "Consultation fee: $100 | Bone and joint specialist | X-ray facility available",
+            pediatrics: "Consultation fee: $80 | Child specialist | Ages 0-18 years",
+            gynecology: "Consultation fee: $90 | Women's health specialist | Female patients only",
+            dermatology: "Consultation fee: $85 | Skin specialist | Biopsy services available",
+            ophthalmology: "Consultation fee: $75 | Eye specialist | Vision testing available",
+            ent: "Consultation fee: $80 | Ear, Nose & Throat specialist",
+            neurology: "Consultation fee: $130 | Brain and nervous system specialist",
+            psychiatry: "Consultation fee: $110 | Mental health specialist | Confidential sessions"
+        };
+
+        // Doctor lists by department
+        const doctorsByDepartment = {
+            general: ["Dr. Sarah Johnson", "Dr. Michael Chen", "Dr. Emily Rodriguez"],
+            cardiology: ["Dr. Robert Williams", "Dr. Lisa Park"],
+            orthopedics: ["Dr. James Wilson", "Dr. Maria Garcia"],
+            pediatrics: ["Dr. Jennifer Lee", "Dr. David Kim"],
+            gynecology: ["Dr. Amanda Thompson", "Dr. Rachel Green"],
+            dermatology: ["Dr. Kevin Brown", "Dr. Susan Davis"],
+            ophthalmology: ["Dr. Thomas Miller", "Dr. Nancy White"],
+            ent: ["Dr. Christopher Taylor", "Dr. Michelle Anderson"],
+            neurology: ["Dr. Richard Clark", "Dr. Helen Lewis"],
+            psychiatry: ["Dr. Daniel Moore", "Dr. Patricia Hall"]
+        };
+
+        function goBack() {
+            console.log('Navigate back to dashboard');
+        }
+
+        function goToAppointments() {
+            console.log('Navigate to appointments management');
+        }
+
+        // Set minimum date to today
+        document.getElementById('appointmentDate').min = new Date().toISOString().split('T')[0];
+
+        // Department change handler
+        document.getElementById('department').addEventListener('change', function() {
+            const department = this.value;
+            const departmentInfoDiv = document.getElementById('departmentInfo');
+            const doctorSelect = document.getElementById('doctor');
+            
+            if (department) {
+                // Show department info
+                departmentInfoDiv.textContent = departmentInfo[department] || '';
+                departmentInfoDiv.style.display = 'block';
+                
+                // Update doctor options
+                doctorSelect.innerHTML = '<option value="">Any Available Doctor</option>';
+                if (doctorsByDepartment[department]) {
+                    doctorsByDepartment[department].forEach(doctor => {
+                        const option = document.createElement('option');
+                        option.value = doctor.toLowerCase().replace(/\s+/g, '');
+                        option.textContent = doctor;
+                        doctorSelect.appendChild(option);
+                    });
+                }
+            } else {
+                departmentInfoDiv.style.display = 'none';
+                doctorSelect.innerHTML = '<option value="">Any Available Doctor</option>';
+            }
+        });
+
+        // Date change handler - simulate checking availability
+        document.getElementById('appointmentDate').addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            const dayOfWeek = selectedDate.getDay();
+            
+            // Simulate weekend unavailability
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.classList.remove('unavailable');
+                const input = slot.querySelector('input');
+                input.disabled = false;
+                
+                if (dayOfWeek === 0 || dayOfWeek === 6) { // Weekend
+                    slot.classList.add('unavailable');
+                    input.disabled = true;
+                    input.checked = false;
+                }
+            });
+        });
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Patient name validation
+            const patientName = document.getElementById('patientName').value.trim();
+            if (patientName.length < 2) {
+                showError('patientNameError', 'Patient name must be at least 2 characters long');
+                isValid = false;
+            }
+
+            // Phone validation
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^[+]?[\d\s-()]{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                showError('phoneError', 'Please enter a valid phone number');
+                isValid = false;
+            }
+
+            // Department validation
+            const department = document.getElementById('department').value;
+            if (!department) {
+                showError('departmentError', 'Please select a department');
+                isValid = false;
+            }
+
+            // Date validation
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            if (!appointmentDate) {
+                showError('appointmentDateError', 'Please select an appointment date');
+                isValid = false;
+            } else {
+                const selectedDate = new Date(appointmentDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                    showError('appointmentDateError', 'Cannot book appointments for past dates');
+                    isValid = false;
+                }
+            }
+
+            // Time validation
+            const appointmentTime = document.querySelector('input[name="appointmentTime"]:checked');
+            if (!appointmentTime) {
+                showError('appointmentTimeError', 'Please select an appointment time');
+                isValid = false;
+            }
+
+            // Priority validation
+            const priority = document.querySelector('input[name="priority"]:checked');
+            if (!priority) {
+                showError('priorityError', 'Please select priority level');
+                isValid = false;
+            }
+
+            // Symptoms validation
+            const symptoms = document.getElementById('symptoms').value.trim();
+            if (symptoms.length < 10) {
+                showError('symptomsError', 'Please provide more details about your symptoms (at least 10 characters)');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // Form submission
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                const formData = {
+                    patientName: document.getElementById('patientName').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    department: document.getElementById('department').value,
+                    doctor: document.getElementById('doctor').value || 'any',
+                    appointmentDate: document.getElementById('appointmentDate').value,
+                    appointmentTime: document.querySelector('input[name="appointmentTime"]:checked').value,
+                    priority: document.querySelector('input[name="priority"]:checked').value,
+                    symptoms: document.getElementById('symptoms').value.trim(),
+                    notes: document.getElementById('notes').value.trim()
+                };
+                
+                console.log('Appointment data:', formData);
+                
+                // Disable button during submission
+                const submitButton = document.querySelector('.appointment-button');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Booking Appointment...';
+                
+                // Simulate API call
+                setTimeout(() => {
+                    alert('Appointment booked successfully! You will receive a confirmation message shortly.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Book Appointment';
+                    // Redirect or reset form
+                    document.getElementById('appointmentForm').reset();
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
