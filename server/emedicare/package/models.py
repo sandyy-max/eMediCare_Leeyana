@@ -19,7 +19,7 @@ class HealthPackage(models.Model):
 class PackagePurchase(models.Model):
     patient = models.ForeignKey(User, on_delete=models.CASCADE)
     package = models.ForeignKey(HealthPackage, on_delete=models.CASCADE)
-    selected_date = models.DateField()  # Date patient chooses
+    selected_date = models.DateField(default='2024-01-01')  # Date patient chooses
     purchased_at = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=20, default='Success')  # Simplified
     valid_until = models.DateField(blank=True, null=True)
