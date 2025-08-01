@@ -514,8 +514,75 @@
     </script>
 
     <!-- API Connection Script -->
-    <script src="../js/api.js"></script>
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // API Helper Functions
+        class API {
+            static async request(endpoint, options = {}) {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                console.log('API Request:', { url, config }); // Debug log
+
+                try {
+                    const response = await fetch(url, config);
+                    console.log('API Response status:', response.status); // Debug log
+                    
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        console.log('API Response data:', data); // Debug log
+                        
+                        if (!response.ok) {
+                            throw new Error(data.error || data.detail || 'API request failed');
+                        }
+                        
+                        return data;
+                    } else {
+                        const text = await response.text();
+                        console.error('Non-JSON response:', text);
+                        throw new Error('Server returned invalid response. Please check if the server is running.');
+                    }
+                } catch (error) {
+                    console.error('API Error:', error);
+                    
+                    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                        throw new Error('Cannot connect to server. Please make sure the server is running on http://localhost:8000');
+                    }
+                    
+                    throw error;
+                }
+            }
+
+            static async register(userData) {
+                return this.request('/register/', {
+                    method: 'POST',
+                    body: JSON.stringify(userData)
+                });
+            }
+        }
+
+        // Utility Functions
+        const Utils = {
+            setToken(token) {
+                localStorage.setItem('access_token', token);
+            },
+            showSuccess(message) {
+                alert(message);
+            },
+            showError(message) {
+                alert('Error: ' + message);
+            }
+        };
+
         // Test if API is loaded
         console.log('API loaded:', typeof API);
         console.log('Utils loaded:', typeof Utils);
@@ -536,21 +603,15 @@
         // Form submission
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            console.log('Form submitted!'); // Debug log
             
             if (validateForm()) {
-                console.log('Form validation passed'); // Debug log
                 const formData = {
                     full_name: document.getElementById('firstName').value.trim() + ' ' + document.getElementById('lastName').value.trim(),
                     phone_number: document.getElementById('phone').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     password: document.getElementById('password').value,
-                    gender: document.querySelector('input[name="gender"]:checked').value,
-                    age: parseInt(document.getElementById('age').value),
-                    address: document.getElementById('address').value.trim()
+                    confirm_password: document.getElementById('confirmPassword').value
                 };
-                
-                console.log('Form data:', formData); // Debug log
                 
                 // Disable button during submission
                 const submitButton = document.querySelector('.register-button');
@@ -558,21 +619,17 @@
                 submitButton.textContent = 'Creating Account...';
                 
                 try {
-                    console.log('Calling API.register...'); // Debug log
                     const response = await API.register(formData);
-                    console.log('API response:', response); // Debug log
-                    Utils.showSuccess('Registration successful! Please login with your credentials.');
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Create Account';
-                    window.location.href = 'login.html';
+                    Utils.setToken(response.access);
+                    Utils.showSuccess('Account created successfully! Redirecting to dashboard...');
+                    setTimeout(() => {
+                        window.location.href = '../dashboard/dashboard.html';
+                    }, 1500);
                 } catch (error) {
-                    console.error('Registration error:', error); // Debug log
                     Utils.showError(error.message);
                     submitButton.disabled = false;
                     submitButton.textContent = 'Create Account';
                 }
-            } else {
-                console.log('Form validation failed'); // Debug log
             }
         });
     </script>

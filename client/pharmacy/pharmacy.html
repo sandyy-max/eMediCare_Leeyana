@@ -962,31 +962,87 @@
         </div>
     </div>
 
-    <!-- API Connection Script -->
-    <script src="../js/api.js"></script>
     <script>
+        // Global variables
+        let medicines = [];
+        let filteredMedicines = [];
+        let cart = [];
+        let productsGrid;
+
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Pharmacy page loaded, starting to load medicines...');
+            
+            // Initialize DOM elements
+            productsGrid = document.getElementById('productsGrid');
+            
+            console.log('Global variables initialized:', { medicines, filteredMedicines, cart, productsGrid });
+            
             if (!Utils.isLoggedIn()) {
                 Utils.showError('Please login first');
                 window.location.href = '../userauth/login.html';
                 return;
             }
 
+            // Test API directly
+            testMedicineAPI();
+            
             // Load medicines from API
-            loadMedicines();
+            loadMedicines().then(() => {
+                console.log('Medicines loaded successfully');
+                updateCartCount();
+            }).catch(error => {
+                console.error('Failed to load medicines:', error);
+                // Show error message to user
+                if (productsGrid) {
+                    productsGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #48ADE7;">
+                            <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                            <h3>Failed to load medicines</h3>
+                            <p>Error: ${error.message}</p>
+                            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #004AAD; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
+                        </div>
+                    `;
+                }
+            });
         });
 
         // Load medicines from API
         async function loadMedicines() {
             try {
+                console.log('Loading medicines from API...');
                 const response = await API.getMedicines();
-                medicines = response;
-                console.log('Medicines loaded:', medicines);
+                console.log('API Response:', response);
+                
+                if (!response || response.length === 0) {
+                    console.log('No medicines returned from API, using default medicines');
+                    throw new Error('No medicines available');
+                }
+                
+                // Map API data to expected format
+                medicines = response.map(medicine => ({
+                    id: medicine.id,
+                    name: medicine.name,
+                    generic: medicine.name, // Use name as generic since API doesn't have generic field
+                    price: parseFloat(medicine.price),
+                    unit: "per unit", // Default unit since API doesn't have unit field
+                    category: "general", // Default category
+                    prescription: "otc", // Default prescription status
+                    stock: medicine.stock > 0 ? "in-stock" : "out-of-stock",
+                    stockCount: medicine.stock,
+                    description: medicine.description,
+                    manufacturer: "Generic", // Default manufacturer
+                    image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=300&h=300&fit=crop&crop=center" // Default image
+                }));
+                console.log('Medicines mapped:', medicines);
+                filteredMedicines = [...medicines];
+                console.log('Filtered medicines:', filteredMedicines);
                 renderProducts();
+                return Promise.resolve(); // Return resolved promise
             } catch (error) {
                 console.error('Error loading medicines:', error);
                 // Use default medicines if API fails
+                console.log('Using fallback medicines...');
                 medicines = [
             {
                 id: 1,
@@ -1157,9 +1213,13 @@
                 image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=300&fit=crop&crop=center"
             }
         ];
+        filteredMedicines = [...medicines];
+        renderProducts();
+        return Promise.resolve(); // Return resolved promise for fallback
+        }
+        }
 
-        let cart = [];
-        let filteredMedicines = [...medicines];
+        // Global variables are already declared above
         let currentBuyNowItem = null;
 
         function goBack() {
@@ -1170,7 +1230,19 @@
             const productsGrid = document.getElementById('productsGrid');
             productsGrid.innerHTML = '';
 
+            console.log('renderProducts called');
+            console.log('medicines:', medicines);
+            console.log('filteredMedicines:', filteredMedicines);
+            console.log('productsGrid element:', productsGrid);
+
+            // Initialize filteredMedicines if not set
+            if (!filteredMedicines || filteredMedicines.length === 0) {
+                filteredMedicines = medicines || [];
+                console.log('Initialized filteredMedicines:', filteredMedicines);
+            }
+
             if (filteredMedicines.length === 0) {
+                console.log('No medicines to display, showing empty state');
                 productsGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #48ADE7;">
                         <div style="font-size: 48px; margin-bottom: 20px;">🔍</div>
@@ -1180,6 +1252,9 @@
                 `;
                 return;
             }
+
+            console.log('About to render', filteredMedicines.length, 'medicines');
+            productsGrid.innerHTML = ''; // Clear existing content
 
             filteredMedicines.forEach(medicine => {
                 const productCard = document.createElement('div');
@@ -1476,7 +1551,8 @@ Please visit the pharmacy counter with your order number.
 
 Thank you for choosing Leeyana Pharmacy!`);
                 
-                cart = [];
+                // Clear cart after successful order
+                cart.length = 0;
                 updateCartCount();
                 closeCartModal();
             }
@@ -1519,7 +1595,8 @@ Please proceed to the pharmacy counter with this order number to:
 Your order will be held for 24 hours.
 Thank you for choosing Leeyana Pharmacy!`);
                 
-                cart = [];
+                // Clear cart after successful order
+                cart.length = 0;
                 updateCartCount();
                 closeCartModal();
             }
@@ -1540,7 +1617,11 @@ Thank you for choosing Leeyana Pharmacy!`);
             const stockFilter = document.getElementById('stockFilter').value;
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
-            filteredMedicines = medicines.filter(medicine => {
+            // Initialize filteredMedicines with all medicines if not already set
+            if (!medicines || medicines.length === 0) {
+                filteredMedicines = [];
+            } else {
+                filteredMedicines = medicines.filter(medicine => {
                 // Category filter
                 if (categoryFilter && medicine.category !== categoryFilter) return false;
                 
@@ -1568,7 +1649,8 @@ Thank you for choosing Leeyana Pharmacy!`);
                     !medicine.description.toLowerCase().includes(searchTerm)) return false;
                 
                 return true;
-            });
+                });
+            }
 
             renderProducts();
         }
@@ -1637,11 +1719,143 @@ Thank you for choosing Leeyana Pharmacy!`);
             }
         });
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProducts();
-            updateCartCount();
-        });
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // API Helper Functions
+        class API {
+            static async request(endpoint, options = {}) {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                console.log('Making API request to:', url);
+                console.log('Request config:', config);
+
+                try {
+                    const response = await fetch(url, config);
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        console.log('Response data:', data);
+                        if (!response.ok) {
+                            throw new Error(data.error || data.detail || `API request failed: ${response.status}`);
+                        }
+                        return data;
+                    } else {
+                        const text = await response.text();
+                        console.log('Non-JSON response:', text);
+                        throw new Error('Server returned invalid response');
+                    }
+                } catch (error) {
+                    console.error('API Error:', error);
+                    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                        throw new Error('Cannot connect to server. Please make sure the server is running on http://localhost:8000');
+                    }
+                    throw error;
+                }
+            }
+
+            static async getMedicines() {
+                return this.request('/pharmacy/medicines/', {
+                    method: 'GET'
+                });
+            }
+
+            static async requestMedicine(medicineData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Please login first to request medicines');
+                }
+                return this.request('/pharmacy/request/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(medicineData)
+                });
+            }
+
+            static async uploadPrescription(formData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Please login first to upload prescriptions');
+                }
+                return this.request('/pharmacy/prescriptions/upload/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+            }
+        }
+
+        // Utility Functions
+        const Utils = {
+            setToken(token) {
+                localStorage.setItem('access_token', token);
+            },
+
+            getToken() {
+                return localStorage.getItem('access_token');
+            },
+
+            removeToken() {
+                localStorage.removeItem('access_token');
+            },
+
+            isLoggedIn() {
+                return !!localStorage.getItem('access_token');
+            },
+
+            showSuccess(message) {
+                alert('Success: ' + message);
+            },
+
+            showError(message) {
+                alert('Error: ' + message);
+            },
+
+            navigateTo(url) {
+                window.location.href = url;
+            },
+
+            logout() {
+                this.removeToken();
+                this.navigateTo('../home.html');
+            }
+        };
+
+        // Initialize page - consolidated into the first DOMContentLoaded listener above
+
+        // Test function to debug API
+        async function testMedicineAPI() {
+            try {
+                console.log('Testing medicine API directly...');
+                const response = await fetch('http://localhost:8000/api/pharmacy/medicines/');
+                console.log('Direct fetch response status:', response.status);
+                console.log('Direct fetch response headers:', response.headers);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Direct fetch data:', data);
+                    console.log('Number of medicines:', data.length);
+                } else {
+                    console.log('Direct fetch failed:', response.status);
+                }
+            } catch (error) {
+                console.error('Direct fetch error:', error);
+            }
+        }
 
         // ESC key to close modals
         document.addEventListener('keydown', function(e) {

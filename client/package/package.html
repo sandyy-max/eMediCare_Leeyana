@@ -738,6 +738,67 @@
             }
         });
 
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // API Helper Functions
+        class API {
+            static async request(endpoint, options = {}) {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                try {
+                    const response = await fetch(url, config);
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || data.detail || 'API request failed');
+                        }
+                        return data;
+                    } else {
+                        const text = await response.text();
+                        throw new Error('Server returned invalid response');
+                    }
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw error;
+                }
+            }
+
+            static async getPackages() {
+                return this.request('/packages/', {
+                    method: 'GET'
+                });
+            }
+
+            static async buyPackage(packageData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Please login first to purchase packages');
+                }
+                return this.request('/packages/purchase/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(packageData)
+                });
+            }
+        }
+
+        // Utility Functions
+        const Utils = {
+            showSuccess(message) { alert(message); },
+            showError(message) { alert('Error: ' + message); }
+        };
+
         // Form submission
         document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();

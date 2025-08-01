@@ -543,6 +543,138 @@
                 }
             }
         }
+
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // API Helper Functions
+        class API {
+            static async request(endpoint, options = {}) {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                try {
+                    const response = await fetch(url, config);
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || data.detail || 'API request failed');
+                        }
+                        return data;
+                    } else {
+                        const text = await response.text();
+                        throw new Error('Server returned invalid response');
+                    }
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw error;
+                }
+            }
+
+            static async getProfile() {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/user/profile/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            }
+
+            static async updateProfile(profileData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/user/profile/', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+            }
+
+            static async updateMedicalInfo(medicalData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/user/medical-info/', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(medicalData)
+                });
+            }
+
+            static async changePassword(currentPassword, newPassword) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/user/change-password/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        current_password: currentPassword,
+                        new_password: newPassword
+                    })
+                });
+            }
+
+            static async updatePreferences(preferencesData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/user/preferences/', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(preferencesData)
+                });
+            }
+        }
+
+        // Utility Functions
+        const Utils = {
+            showSuccess(message) { alert(message); },
+            showError(message) { alert('Error: ' + message); }
+        };
+
+        // Load profile data on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const profile = await API.getProfile();
+                // Populate profile fields with user data
+                if (profile) {
+                    document.getElementById('fullName').value = profile.full_name || '';
+                    document.getElementById('phone').value = profile.phone_number || '';
+                    document.getElementById('email').value = profile.email || '';
+                    document.getElementById('address').value = profile.address || '';
+                    document.getElementById('age').value = profile.age || '';
+                    document.getElementById('gender').value = profile.gender || '';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                Utils.showError('Failed to load profile data');
+            }
+        });
     </script>
 </body>
 </html> 

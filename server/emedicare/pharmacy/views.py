@@ -5,7 +5,7 @@ from .serializer import MedicineSerializer, PrescriptionSerializer, MedicineRequ
 class MedicineListView(generics.ListAPIView):
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class UploadPrescriptionView(generics.CreateAPIView):
     serializer_class = PrescriptionSerializer

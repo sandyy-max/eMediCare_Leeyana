@@ -4,8 +4,9 @@ const API_BASE_URL = 'http://localhost:8000/api';
 // API Helper Functions
 class API {
     static async request(endpoint, options = {}) {
-        const url = `${API_BASE_URL}${endpoint}`;
+        const url = API_BASE_URL + endpoint;
         const config = {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 ...options.headers
@@ -13,205 +14,202 @@ class API {
             ...options
         };
 
+        if (options.body && typeof options.body === 'object') {
+            config.body = JSON.stringify(options.body);
+        }
+
         try {
             const response = await fetch(url, config);
-            const data = await response.json();
-            
             if (!response.ok) {
-                throw new Error(data.error || 'API request failed');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.detail || `API request failed: ${response.status}`);
             }
-            
-            return data;
+            return await response.json();
         } catch (error) {
-            console.error('API Error:', error);
+            console.error('API request error:', error);
             throw error;
         }
     }
 
-    // User Authentication APIs
-    static async register(userData) {
-        return this.request('/register/', {
-            method: 'POST',
-            body: JSON.stringify(userData)
-        });
-    }
-
+    // Authentication methods
     static async login(credentials) {
         return this.request('/token/', {
             method: 'POST',
-            body: JSON.stringify(credentials)
+            body: credentials
         });
     }
 
+    static async register(userData) {
+        return this.request('/register/', {
+            method: 'POST',
+            body: userData
+        });
+    }
+
+    // Appointment methods
+    static async bookAppointment(appointmentData) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request('/appointments/', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: appointmentData
+        });
+    }
+
+    // Package methods
+    static async getPackages() {
+        return this.request('/packages/', { method: 'GET' });
+    }
+
+    static async buyPackage(packageData) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Please login first to purchase packages');
+        }
+        return this.request('/packages/purchase/', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: packageData
+        });
+    }
+
+    // Pharmacy methods
+    static async getMedicines() {
+        return this.request('/pharmacy/medicines/', { method: 'GET' });
+    }
+
+    static async requestMedicine(medicineData) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Please login first to request medicines');
+        }
+        return this.request('/pharmacy/request/', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: medicineData
+        });
+    }
+
+    static async uploadPrescription(formData) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Please login first to upload prescriptions');
+        }
+        return this.request('/pharmacy/prescriptions/upload/', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+        });
+    }
+
+    // Medical history methods
+    static async getMedicalHistory() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request('/clinical/history/', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    }
+
+    // Profile methods
     static async getProfile() {
         const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
         return this.request('/user/profile/', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
     }
 
-    static async getUserProfile() {
+    static async updateProfile(profileData) {
         const token = localStorage.getItem('access_token');
-        return this.request('/user/profile/', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-    }
-
-    static async updateUserProfile(profileData) {
-        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
         return this.request('/user/profile/', {
             method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(profileData)
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: profileData
         });
     }
 
     static async updateMedicalInfo(medicalData) {
         const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
         return this.request('/user/medical-info/', {
             method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(medicalData)
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: medicalData
         });
     }
 
     static async changePassword(currentPassword, newPassword) {
         const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
         return this.request('/user/change-password/', {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                current_password: currentPassword,
-                new_password: newPassword
-            })
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: { current_password: currentPassword, new_password: newPassword }
         });
     }
 
     static async updatePreferences(preferencesData) {
         const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
         return this.request('/user/preferences/', {
             method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(preferencesData)
-        });
-    }
-
-    // Appointment APIs
-    static async bookAppointment(appointmentData) {
-        const token = localStorage.getItem('access_token');
-        return this.request('/appointments/', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(appointmentData)
-        });
-    }
-
-    // Package APIs
-    static async getPackages() {
-        return this.request('/packages/');
-    }
-
-    static async buyPackage(packageData) {
-        const token = localStorage.getItem('access_token');
-        return this.request('/packages/buy/', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(packageData)
-        });
-    }
-
-    // Medical History APIs
-    static async getMedicalHistory() {
-        const token = localStorage.getItem('access_token');
-        return this.request('/clinical/history/', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-    }
-
-    // Pharmacy APIs
-    static async getMedicines() {
-        return this.request('/pharmacy/medicines/');
-    }
-
-    static async requestMedicine(requestData) {
-        const token = localStorage.getItem('access_token');
-        return this.request('/pharmacy/request/', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(requestData)
-        });
-    }
-
-    static async uploadPrescription(prescriptionData) {
-        const token = localStorage.getItem('access_token');
-        return this.request('/pharmacy/prescriptions/upload/', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(prescriptionData)
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: preferencesData
         });
     }
 }
 
 // Utility Functions
 const Utils = {
-    // Store user token
     setToken(token) {
         localStorage.setItem('access_token', token);
     },
 
-    // Get stored token
     getToken() {
         return localStorage.getItem('access_token');
     },
 
-    // Remove token (logout)
     removeToken() {
         localStorage.removeItem('access_token');
     },
 
-    // Check if user is logged in
     isLoggedIn() {
-        return !!this.getToken();
+        return !!localStorage.getItem('access_token');
     },
 
-    // Show success message
     showSuccess(message) {
-        alert(message); // You can replace this with a better UI
+        alert('Success: ' + message);
     },
 
-    // Show error message
     showError(message) {
-        alert('Error: ' + message); // You can replace this with a better UI
+        alert('Error: ' + message);
     },
 
-    // Navigate to page
-    navigateTo(page) {
-        window.location.href = page;
-    }
-};
+    navigateTo(url) {
+        window.location.href = url;
+    },
 
-// Export for use in other files
-window.API = API;
-window.Utils = Utils; 
+    logout() {
+        this.removeToken();
+        this.navigateTo('../home.html');
+    }
+}; 

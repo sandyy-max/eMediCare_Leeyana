@@ -379,31 +379,38 @@
             
             <form id="appointmentForm">
                 <div class="form-group">
-                    <label for="patientName">Patient Name:</label>
-                    <input type="text" id="patientName" name="patientName" placeholder="Enter patient's full name" required>
-                    <div class="error-message" id="patientNameError"></div>
+                    <label for="full_name">Full Name:</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+                    <div class="error-message" id="full_nameError"></div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone">Contact Number:</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                    <div class="error-message" id="phoneError"></div>
+                    <label for="phone_number">Contact Number:</label>
+                    <input type="tel" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
+                    <div class="error-message" id="phone_numberError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address <span class="optional">(Optional)</span>:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <div class="error-message" id="dobError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="department">Department:</label>
                     <select id="department" name="department" required>
                         <option value="">Select Department</option>
-                        <option value="general">General Medicine</option>
-                        <option value="cardiology">Cardiology</option>
-                        <option value="orthopedics">Orthopedics</option>
-                        <option value="pediatrics">Pediatrics</option>
-                        <option value="gynecology">Gynecology</option>
-                        <option value="dermatology">Dermatology</option>
-                        <option value="ophthalmology">Ophthalmology</option>
-                        <option value="ent">ENT</option>
-                        <option value="neurology">Neurology</option>
-                        <option value="psychiatry">Psychiatry</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Pulmonology">Pulmonology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                        <option value="Gynecology">Gynecology</option>
                     </select>
                     <div class="department-info" id="departmentInfo" style="display: none;"></div>
                     <div class="error-message" id="departmentError"></div>
@@ -429,27 +436,27 @@
                     <label>Preferred Time:</label>
                     <div class="time-slots">
                         <div class="time-slot">
-                            <input type="radio" id="time09" name="appointmentTime" value="09:00" required>
+                            <input type="radio" id="time09" name="appointmentTime" value="09:00">
                             <label for="time09">9:00 AM</label>
                         </div>
                         <div class="time-slot">
-                            <input type="radio" id="time10" name="appointmentTime" value="10:00" required>
+                            <input type="radio" id="time10" name="appointmentTime" value="10:00">
                             <label for="time10">10:00 AM</label>
                         </div>
                         <div class="time-slot">
-                            <input type="radio" id="time11" name="appointmentTime" value="11:00" required>
+                            <input type="radio" id="time11" name="appointmentTime" value="11:00">
                             <label for="time11">11:00 AM</label>
                         </div>
                         <div class="time-slot">
-                            <input type="radio" id="time14" name="appointmentTime" value="14:00" required>
+                            <input type="radio" id="time14" name="appointmentTime" value="14:00">
                             <label for="time14">2:00 PM</label>
                         </div>
                         <div class="time-slot">
-                            <input type="radio" id="time15" name="appointmentTime" value="15:00" required>
+                            <input type="radio" id="time15" name="appointmentTime" value="15:00">
                             <label for="time15">3:00 PM</label>
                         </div>
                         <div class="time-slot">
-                            <input type="radio" id="time16" name="appointmentTime" value="16:00" required>
+                            <input type="radio" id="time16" name="appointmentTime" value="16:00">
                             <label for="time16">4:00 PM</label>
                         </div>
                     </div>
@@ -461,11 +468,11 @@
                     <label>Priority Level:</label>
                     <div class="priority-group">
                         <div class="priority-option">
-                            <input type="radio" id="routine" name="priority" value="routine" required>
+                            <input type="radio" id="routine" name="priority" value="routine">
                             <label for="routine">Routine</label>
                         </div>
                         <div class="priority-option urgent">
-                            <input type="radio" id="urgent" name="priority" value="urgent" required>
+                            <input type="radio" id="urgent" name="priority" value="urgent">
                             <label for="urgent">Urgent</label>
                         </div>
                     </div>
@@ -496,30 +503,20 @@
     <script>
         // Department information
         const departmentInfo = {
-            general: "Consultation fee: $50 | Average wait time: 15-30 minutes",
-            cardiology: "Consultation fee: $120 | Specialist appointment | May require ECG",
-            orthopedics: "Consultation fee: $100 | Bone and joint specialist | X-ray facility available",
-            pediatrics: "Consultation fee: $80 | Child specialist | Ages 0-18 years",
-            gynecology: "Consultation fee: $90 | Women's health specialist | Female patients only",
-            dermatology: "Consultation fee: $85 | Skin specialist | Biopsy services available",
-            ophthalmology: "Consultation fee: $75 | Eye specialist | Vision testing available",
-            ent: "Consultation fee: $80 | Ear, Nose & Throat specialist",
-            neurology: "Consultation fee: $130 | Brain and nervous system specialist",
-            psychiatry: "Consultation fee: $110 | Mental health specialist | Confidential sessions"
+            Cardiology: "Consultation fee: $120 | Specialist appointment | May require ECG",
+            Pulmonology: "Consultation fee: $110 | Lung specialist | Spirometry available",
+            Dermatology: "Consultation fee: $85 | Skin specialist | Biopsy services available",
+            Pediatrics: "Consultation fee: $80 | Child specialist | Ages 0-18 years",
+            Gynecology: "Consultation fee: $90 | Women's health specialist | Female patients only"
         };
 
         // Doctor lists by department
         const doctorsByDepartment = {
-            general: ["Dr. Sarah Johnson", "Dr. Michael Chen", "Dr. Emily Rodriguez"],
-            cardiology: ["Dr. Robert Williams", "Dr. Lisa Park"],
-            orthopedics: ["Dr. James Wilson", "Dr. Maria Garcia"],
-            pediatrics: ["Dr. Jennifer Lee", "Dr. David Kim"],
-            gynecology: ["Dr. Amanda Thompson", "Dr. Rachel Green"],
-            dermatology: ["Dr. Kevin Brown", "Dr. Susan Davis"],
-            ophthalmology: ["Dr. Thomas Miller", "Dr. Nancy White"],
-            ent: ["Dr. Christopher Taylor", "Dr. Michelle Anderson"],
-            neurology: ["Dr. Richard Clark", "Dr. Helen Lewis"],
-            psychiatry: ["Dr. Daniel Moore", "Dr. Patricia Hall"]
+            Cardiology: ["Dr. Robert Williams", "Dr. Lisa Park"],
+            Pulmonology: ["Dr. Sarah Johnson", "Dr. Michael Chen"],
+            Dermatology: ["Dr. Kevin Brown", "Dr. Susan Davis"],
+            Pediatrics: ["Dr. Jennifer Lee", "Dr. David Kim"],
+            Gynecology: ["Dr. Amanda Thompson", "Dr. Rachel Green"]
         };
 
         function goBack() {
@@ -589,19 +586,40 @@
                 error.style.display = 'none';
             });
 
-            // Patient name validation
-            const patientName = document.getElementById('patientName').value.trim();
-            if (patientName.length < 2) {
-                showError('patientNameError', 'Patient name must be at least 2 characters long');
+            // Full name validation
+            const fullName = document.getElementById('full_name').value.trim();
+            if (fullName.length < 2) {
+                showError('full_nameError', 'Full name must be at least 2 characters long');
                 isValid = false;
             }
 
             // Phone validation
-            const phone = document.getElementById('phone').value.trim();
+            const phone = document.getElementById('phone_number').value.trim();
             const phoneRegex = /^[+]?[\d\s-()]{10,}$/;
             if (!phoneRegex.test(phone)) {
-                showError('phoneError', 'Please enter a valid phone number');
+                showError('phone_numberError', 'Please enter a valid phone number');
                 isValid = false;
+            }
+
+            // Email validation (optional)
+            const email = document.getElementById('email').value.trim();
+            if (email && !isValidEmail(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Date of birth validation
+            const dob = document.getElementById('dob').value;
+            if (!dob) {
+                showError('dobError', 'Please select your date of birth');
+                isValid = false;
+            } else {
+                const dobDate = new Date(dob);
+                const today = new Date();
+                if (dobDate >= today) {
+                    showError('dobError', 'Date of birth cannot be today or in the future');
+                    isValid = false;
+                }
             }
 
             // Department validation
@@ -627,19 +645,19 @@
                 }
             }
 
-            // Time validation
+            // Time validation (optional for backend but good for UX)
             const appointmentTime = document.querySelector('input[name="appointmentTime"]:checked');
-            if (!appointmentTime) {
-                showError('appointmentTimeError', 'Please select an appointment time');
-                isValid = false;
-            }
+            // if (!appointmentTime) {
+            //     showError('appointmentTimeError', 'Please select an appointment time');
+            //     isValid = false;
+            // }
 
-            // Priority validation
+            // Priority validation (optional for backend but good for UX)
             const priority = document.querySelector('input[name="priority"]:checked');
-            if (!priority) {
-                showError('priorityError', 'Please select priority level');
-                isValid = false;
-            }
+            // if (!priority) {
+            //     showError('priorityError', 'Please select priority level');
+            //     isValid = false;
+            // }
 
             // Symptoms validation
             const symptoms = document.getElementById('symptoms').value.trim();
@@ -657,30 +675,119 @@
             errorElement.style.display = 'block';
         }
 
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
     <!-- API Connection Script -->
-    <script src="../js/api.js"></script>
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // API Helper Functions
+        class API {
+            static async request(endpoint, options = {}) {
+                const url = API_BASE_URL + endpoint;
+                const config = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                };
+
+                if (options.body && typeof options.body === 'object') {
+                    config.body = JSON.stringify(options.body);
+                }
+
+                try {
+                    const response = await fetch(url, config);
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.detail || `API request failed: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('API request error:', error);
+                    throw error;
+                }
+            }
+
+            static async bookAppointment(appointmentData) {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                return this.request('/appointments/', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: appointmentData
+                });
+            }
+        }
+
+        // Utility Functions
+        const Utils = {
+            isLoggedIn() {
+                return !!localStorage.getItem('access_token');
+            },
+            showSuccess(message) {
+                alert('Success: ' + message);
+            },
+            showError(message) {
+                alert('Error: ' + message);
+            }
+        };
+
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
             if (!Utils.isLoggedIn()) {
-                Utils.showError('Please login first');
-                window.location.href = 'login.html';
+                Utils.showError('Please login first to book an appointment');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
                 return;
             }
+
+            // Test server connectivity
+            fetch('http://localhost:8000/api/appointments/')
+                .then(response => {
+                    console.log('Server connectivity test:', response.status);
+                })
+                .catch(error => {
+                    console.error('Server connectivity error:', error);
+                    Utils.showError('Server is not accessible. Please make sure the server is running.');
+                });
         });
+
+        // Back button function
+        function goBack() {
+            if (Utils.isLoggedIn()) {
+                window.location.href = '../dashboard/dashboard.html';
+            } else {
+                window.location.href = '../home.html';
+            }
+        }
 
         // Form submission
         document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            console.log('Form submitted!'); // Debug log
             
             if (validateForm()) {
+                console.log('Form validation passed'); // Debug log
                 const formData = {
+                    full_name: document.getElementById('full_name').value.trim(),
+                    phone_number: document.getElementById('phone_number').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    dob: document.getElementById('dob').value,
                     department: document.getElementById('department').value,
-                    symptoms: document.getElementById('symptoms').value.trim(),
-                    preferred_date: document.getElementById('appointmentDate').value,
-                    preferred_time: document.querySelector('input[name="appointmentTime"]:checked').value,
-                    additional_notes: document.getElementById('notes').value.trim()
+                    symptoms: document.getElementById('symptoms').value.trim()
                 };
+                
+                console.log('Form data:', formData); // Debug log
                 
                 // Disable button during submission
                 const submitButton = document.querySelector('.appointment-button');
@@ -688,16 +795,34 @@
                 submitButton.textContent = 'Booking Appointment...';
                 
                 try {
-                    await API.bookAppointment(formData);
+                    console.log('Calling API.bookAppointment...'); // Debug log
+                    const response = await API.bookAppointment(formData);
+                    console.log('API response:', response); // Debug log
                     Utils.showSuccess('Appointment booked successfully! You will receive a confirmation message shortly.');
                     submitButton.disabled = false;
                     submitButton.textContent = 'Book Appointment';
                     document.getElementById('appointmentForm').reset();
                 } catch (error) {
-                    Utils.showError(error.message);
+                    console.error('Appointment booking error:', error);
+                    let errorMessage = 'Failed to book appointment. ';
+                    
+                    if (error.message.includes('Authentication')) {
+                        errorMessage += 'Please login again.';
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    } else if (error.message.includes('API request failed')) {
+                        errorMessage += 'Server is not responding. Please try again later.';
+                    } else {
+                        errorMessage += error.message;
+                    }
+                    
+                    Utils.showError(errorMessage);
                     submitButton.disabled = false;
                     submitButton.textContent = 'Book Appointment';
                 }
+            } else {
+                console.log('Form validation failed'); // Debug log
             }
         });
     </script>

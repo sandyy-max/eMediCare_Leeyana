@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Pharmacy API</title>
+</head>
+<body>
+    <h1>Testing Medicine API</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPI() {
+            try {
+                console.log('Testing medicine API...');
+                const response = await fetch('http://localhost:8000/api/pharmacy/medicines/');
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Medicine data:', data);
+                    document.getElementById('results').innerHTML = `
+                        <h2>API Test Results:</h2>
+                        <p>Status: ${response.status}</p>
+                        <p>Number of medicines: ${data.length}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    document.getElementById('results').innerHTML = `
+                        <h2>API Test Failed:</h2>
+                        <p>Status: ${response.status}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('results').innerHTML = `
+                    <h2>API Test Error:</h2>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+        
+        // Run test when page loads
+        testAPI();
+    </script>
+</body>
+</html> 
