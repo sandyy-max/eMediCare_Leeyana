@@ -74,6 +74,29 @@ class API {
         });
     }
 
+    static async getDoctorsByDepartment(department) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request(`/appointments/doctors/?department=${encodeURIComponent(department)}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    }
+
+    static async rejectAppointment(appointmentId, reason) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request(`/appointments/reject/${appointmentId}/`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: { reason: reason }
+        });
+    }
+
     // Package methods
     static async getPackages() {
         return this.request('/packages/', { method: 'GET' });

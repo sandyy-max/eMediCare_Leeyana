@@ -3,6 +3,12 @@ from .models import Appointment, Confirmation, Doctor
 from datetime import timedelta
 
 
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['id', 'name', 'department', 'available_days', 'is_available']
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment

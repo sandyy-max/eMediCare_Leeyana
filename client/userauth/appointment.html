@@ -49,6 +49,37 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .success-message { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
         .error-message { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        
+        .doctors-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #DDE6EE;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .doctor-item {
+            padding: 10px;
+            border-bottom: 1px solid #DDE6EE;
+            margin-bottom: 5px;
+        }
+
+        .doctor-item:last-child {
+            border-bottom: none;
+        }
+
+        .doctor-name {
+            font-weight: 600;
+            color: #004AAD;
+            margin-bottom: 5px;
+        }
+
+        .doctor-availability {
+            font-size: 12px;
+            color: #48ADE7;
+        }
+        
         @media (max-width: 768px) { .appointment-container { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -106,44 +137,36 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Department</label>
-                            <select class="form-select" id="department" name="department" required>
+                            <select class="form-select" id="department" name="department" required onchange="loadDoctors()">
                                 <option value="">Select department</option>
-                                <option value="cardiology">Cardiology</option>
-                                <option value="neurology">Neurology</option>
-                                <option value="orthopedics">Orthopedics</option>
-                                <option value="pediatrics">Pediatrics</option>
-                                <option value="dermatology">Dermatology</option>
-                                <option value="oncology">Oncology</option>
-                                <option value="psychiatry">Psychiatry</option>
-                                <option value="general">General Medicine</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Pulmonology">Pulmonology</option>
+                                <option value="Dermatology">Dermatology</option>
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Gynecology">Gynecology</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Doctor Preference</label>
-                            <select class="form-select" id="doctorPreference" name="doctorPreference">
-                                <option value="">Any available doctor</option>
-                                <option value="dr-smith">Dr. Smith</option>
-                                <option value="dr-johnson">Dr. Johnson</option>
-                                <option value="dr-williams">Dr. Williams</option>
-                                <option value="dr-brown">Dr. Brown</option>
-                            </select>
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-input" id="dob" name="dob" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Reason for Visit</label>
-                        <textarea class="form-textarea" id="reason" name="reason" placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="email" name="email" placeholder="your.email@example.com">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Urgency Level</label>
-                        <select class="form-select" id="urgency" name="urgency" required>
-                            <option value="">Select urgency</option>
-                            <option value="routine">Routine Checkup</option>
-                            <option value="follow-up">Follow-up Visit</option>
-                            <option value="urgent">Urgent Care</option>
-                            <option value="emergency">Emergency</option>
-                        </select>
+                        <label class="form-label">Symptoms/Reason for Visit</label>
+                        <textarea class="form-textarea" id="symptoms" name="symptoms" placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
+                    </div>
+
+                    <div class="form-group" id="doctorsContainer" style="display: none;">
+                        <label class="form-label">Available Doctors</label>
+                        <div id="doctorsList" class="doctors-list">
+                            <!-- Doctors will be loaded here -->
+                        </div>
                     </div>
 
                     <button type="submit" class="submit-button" id="submitBtn">
@@ -241,12 +264,10 @@
                 const formData = {
                     full_name: document.getElementById('fullName').value,
                     phone_number: document.getElementById('phoneNumber').value,
-                    appointment_date: document.getElementById('appointmentDate').value,
-                    appointment_time: document.getElementById('appointmentTime').value,
+                    email: document.getElementById('email').value || '',
                     department: document.getElementById('department').value,
-                    doctor_preference: document.getElementById('doctorPreference').value,
-                    reason: document.getElementById('reason').value,
-                    urgency: document.getElementById('urgency').value
+                    dob: document.getElementById('dob').value,
+                    symptoms: document.getElementById('symptoms').value
                 };
 
                 await API.bookAppointment(formData);
@@ -301,6 +322,33 @@
 
         function goBack() {
             window.history.back();
+        }
+
+        // Load doctors by department
+        async function loadDoctors() {
+            const department = document.getElementById('department').value;
+            const doctorsContainer = document.getElementById('doctorsContainer');
+            const doctorsList = document.getElementById('doctorsList');
+
+            if (!department) {
+                doctorsContainer.style.display = 'none';
+                return;
+            }
+
+            try {
+                const doctors = await API.getDoctorsByDepartment(department);
+                doctorsList.innerHTML = doctors.map(doctor => `
+                    <div class="doctor-item">
+                        <div class="doctor-name">${doctor.name}</div>
+                        <div class="doctor-availability">Available: ${doctor.available_days.join(', ')}</div>
+                    </div>
+                `).join('');
+                doctorsContainer.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                doctorsList.innerHTML = '<div class="error-message">Failed to load doctors</div>';
+                doctorsContainer.style.display = 'block';
+            }
         }
 
         // Set minimum date to today
