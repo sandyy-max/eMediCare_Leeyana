@@ -328,7 +328,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 74, 173, 0.1);
+            background-color: rgba(0, 74, 173, 0.5);
             backdrop-filter: blur(4px);
         }
 
@@ -594,6 +594,10 @@
             </div>
             <div class="modal-body">
                 <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="packageName">Package Name:</label>
+                        <input type="text" id="packageName" name="packageName" readonly style="background-color: #f8f9fa;">
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="patientName">Full Name:</label>
@@ -664,17 +668,51 @@
         let selectedPackage = '';
         let packages = [];
 
-        // Check if user is logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!Utils.isLoggedIn()) {
-                Utils.showError('Please login first');
-                window.location.href = '../userauth/login.html';
-                return;
+        // Make functions globally accessible
+        window.openBookingModal = async function(packageName) {
+            console.log('Opening booking modal for package:', packageName);
+            selectedPackage = packageName;
+            document.getElementById('modalTitle').textContent = `Book ${packageName}`;
+            document.getElementById('packageName').value = packageName;
+            
+            // Show the modal
+            const modal = document.getElementById('bookingModal');
+            modal.style.display = 'block';
+            console.log('Modal display set to block');
+            
+            // Set minimum date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('preferredDate').min = tomorrow.toISOString().split('T')[0];
+            
+            // Fetch and pre-fill patient information
+            try {
+                console.log('Fetching patient profile...');
+                const patientInfo = await API.getProfile();
+                console.log('Patient info received:', patientInfo);
+                if (patientInfo) {
+                    document.getElementById('patientName').value = patientInfo.full_name || '';
+                    document.getElementById('age').value = patientInfo.age || '';
+                    document.getElementById('phone').value = patientInfo.phone_number || '';
+                    document.getElementById('email').value = patientInfo.email || '';
+                    document.getElementById('address').value = patientInfo.address || '';
+                    console.log('Patient info pre-filled successfully');
+                }
+            } catch (error) {
+                console.error('Error fetching patient info:', error);
+                console.log('Continuing without pre-filling patient data...');
+                // Continue without pre-filling if there's an error
             }
+        };
 
-            // Load packages from API
-            loadPackages();
-        });
+        window.closeBookingModal = function() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingForm').reset();
+        };
+
+        window.goBack = function() {
+            window.location.href = '../dashboard/dashboard.html';
+        };
 
         // Load packages from API
         async function loadPackages() {
@@ -707,21 +745,20 @@
             }
         }
 
-        function openBookingModal(packageName) {
-            selectedPackage = packageName;
-            document.getElementById('modalTitle').textContent = `Book ${packageName}`;
-            document.getElementById('bookingModal').style.display = 'block';
-            
-            // Set minimum date to tomorrow
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('preferredDate').min = tomorrow.toISOString().split('T')[0];
-        }
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking authentication...');
+            if (!Utils.isLoggedIn()) {
+                console.log('User not logged in, redirecting...');
+                Utils.showError('Please login first');
+                window.location.href = '../userauth/login.html';
+                return;
+            }
+            console.log('User is logged in, loading packages...');
 
-        function closeBookingModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-            document.getElementById('bookingForm').reset();
-        }
+            // Load packages from API
+            loadPackages();
+        });
 
         // Close modal when clicking outside
         window.addEventListener('click', function(event) {
@@ -738,67 +775,6 @@
             }
         });
 
-        // API Configuration
-        const API_BASE_URL = 'http://localhost:8000/api';
-
-        // API Helper Functions
-        class API {
-            static async request(endpoint, options = {}) {
-                const url = `${API_BASE_URL}${endpoint}`;
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...options.headers
-                    },
-                    ...options
-                };
-
-                try {
-                    const response = await fetch(url, config);
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        const data = await response.json();
-                        if (!response.ok) {
-                            throw new Error(data.error || data.detail || 'API request failed');
-                        }
-                        return data;
-                    } else {
-                        const text = await response.text();
-                        throw new Error('Server returned invalid response');
-                    }
-                } catch (error) {
-                    console.error('API Error:', error);
-                    throw error;
-                }
-            }
-
-            static async getPackages() {
-                return this.request('/packages/', {
-                    method: 'GET'
-                });
-            }
-
-            static async buyPackage(packageData) {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Please login first to purchase packages');
-                }
-                return this.request('/packages/purchase/', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(packageData)
-                });
-            }
-        }
-
-        // Utility Functions
-        const Utils = {
-            showSuccess(message) { alert(message); },
-            showError(message) { alert('Error: ' + message); }
-        };
-
         // Form submission
         document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -810,15 +786,17 @@
             try {
                 const formData = {
                     package_name: selectedPackage,
-                    patient_name: document.getElementById('patientName').value,
-                    age: document.getElementById('age').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    address: document.getElementById('address').value,
-                    preferred_date: document.getElementById('preferredDate').value,
-                    preferred_time: document.getElementById('preferredTime').value,
-                    medical_history: document.getElementById('medicalHistory').value,
-                    emergency_contact: document.getElementById('emergencyContact').value
+                    selected_date: document.getElementById('preferredDate').value,
+                    patient_details: {
+                        name: document.getElementById('patientName').value,
+                        age: document.getElementById('age').value,
+                        phone: document.getElementById('phone').value,
+                        email: document.getElementById('email').value,
+                        address: document.getElementById('address').value,
+                        preferred_time: document.getElementById('preferredTime').value,
+                        medical_history: document.getElementById('medicalHistory').value,
+                        emergency_contact: document.getElementById('emergencyContact').value
+                    }
                 };
                 
                 await API.buyPackage(formData);
@@ -833,10 +811,6 @@
                 submitButton.textContent = 'Book Package';
             }
         });
-
-        function goBack() {
-            window.location.href = '../dashboard/dashboard.html';
-        }
 
         // Smooth scrolling animation
         document.addEventListener('DOMContentLoaded', function() {

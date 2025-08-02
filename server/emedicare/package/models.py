@@ -23,6 +23,7 @@ class PackagePurchase(models.Model):
     purchased_at = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=20, default='Success')  # Simplified
     valid_until = models.DateField(blank=True, null=True)
+    patient_details = models.JSONField(default=dict, blank=True)  # Store patient details
 
     def save(self, *args, **kwargs):
         if not self.valid_until:
