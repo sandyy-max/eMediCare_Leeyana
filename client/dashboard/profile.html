@@ -162,7 +162,7 @@
 
         async function loadUserProfile() {
             try {
-                const response = await API.getUserProfile();
+                const response = await API.getProfile();
                 userProfile = response;
                 console.log('User profile loaded:', userProfile);
                 updateProfileDisplay();
@@ -201,12 +201,7 @@
             renderPreferences();
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
+
 
         function renderPersonalInfo() {
             const container = document.getElementById('personal-content');
@@ -437,7 +432,7 @@
                     emergency_contact: document.getElementById('emergencyContact').value
                 };
                 
-                await API.updateUserProfile(formData);
+                await API.updateProfile(formData);
                 Utils.showSuccess('Personal information updated successfully!');
                 
             } catch (error) {
@@ -524,157 +519,35 @@
             }
         }
 
-        function goBack() {
+        // Make functions globally accessible
+        window.goBack = function() {
             window.location.href = '../dashboard/dashboard.html';
-        }
+        };
 
-        function changePassword() {
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        };
+
+        window.changePassword = function() {
             switchTab('security');
-        }
+        };
 
-        function privacySettings() {
+        window.privacySettings = function() {
             Utils.showSuccess('Privacy settings opened!');
-        }
+        };
 
-        function deleteAccount() {
+        window.deleteAccount = function() {
             if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
                 if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
                     Utils.showSuccess('Account deletion request submitted. You will receive a confirmation email.');
                 }
             }
-        }
-
-        // API Configuration
-        const API_BASE_URL = 'http://localhost:8000/api';
-
-        // API Helper Functions
-        class API {
-            static async request(endpoint, options = {}) {
-                const url = `${API_BASE_URL}${endpoint}`;
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...options.headers
-                    },
-                    ...options
-                };
-
-                try {
-                    const response = await fetch(url, config);
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        const data = await response.json();
-                        if (!response.ok) {
-                            throw new Error(data.error || data.detail || 'API request failed');
-                        }
-                        return data;
-                    } else {
-                        const text = await response.text();
-                        throw new Error('Server returned invalid response');
-                    }
-                } catch (error) {
-                    console.error('API Error:', error);
-                    throw error;
-                }
-            }
-
-            static async getProfile() {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Authentication required');
-                }
-                return this.request('/user/profile/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-            }
-
-            static async updateProfile(profileData) {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Authentication required');
-                }
-                return this.request('/user/profile/', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(profileData)
-                });
-            }
-
-            static async updateMedicalInfo(medicalData) {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Authentication required');
-                }
-                return this.request('/user/medical-info/', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(medicalData)
-                });
-            }
-
-            static async changePassword(currentPassword, newPassword) {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Authentication required');
-                }
-                return this.request('/user/change-password/', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        current_password: currentPassword,
-                        new_password: newPassword
-                    })
-                });
-            }
-
-            static async updatePreferences(preferencesData) {
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Authentication required');
-                }
-                return this.request('/user/preferences/', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(preferencesData)
-                });
-            }
-        }
-
-        // Utility Functions
-        const Utils = {
-            showSuccess(message) { alert(message); },
-            showError(message) { alert('Error: ' + message); }
         };
 
-        // Load profile data on page load
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                const profile = await API.getProfile();
-                // Populate profile fields with user data
-                if (profile) {
-                    document.getElementById('fullName').value = profile.full_name || '';
-                    document.getElementById('phone').value = profile.phone_number || '';
-                    document.getElementById('email').value = profile.email || '';
-                    document.getElementById('address').value = profile.address || '';
-                    document.getElementById('age').value = profile.age || '';
-                    document.getElementById('gender').value = profile.gender || '';
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
-                Utils.showError('Failed to load profile data');
-            }
-        });
+
     </script>
 </body>
 </html> 
