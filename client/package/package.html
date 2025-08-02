@@ -19,29 +19,28 @@
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 74, 173, 0.1);
+            border-bottom: 3px solid #004AAD;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            position: relative;
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .back-button {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
             background: #004AAD;
-            color: white;
             border: none;
+            color: white;
+            cursor: pointer;
             padding: 10px 20px;
             border-radius: 6px;
-            cursor: pointer;
             font-weight: 500;
             transition: background 0.2s ease;
         }
@@ -50,7 +49,29 @@
             background: #1C7EB7;
         }
 
-        .header h1 {
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #004AAD;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            border-left: 4px solid #004AAD;
+            box-shadow: 0 2px 10px rgba(0, 74, 173, 0.1);
+        }
+
+        .page-header h1 {
             font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 16px;
@@ -60,7 +81,7 @@
             background-clip: text;
         }
 
-        .header p {
+        .page-header p {
             font-size: 1.2rem;
             color: #A1BCCC;
             max-width: 600px;
@@ -85,6 +106,8 @@
             transition: all 0.3s ease;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
+            display: flex;
+            flex-direction: column;
         }
 
         .package-card:hover {
@@ -100,226 +123,135 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
-        }
-
-        .package-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(72, 173, 231, 0.1);
-            border-radius: 20px;
-            border: 2px solid #DDE6EE;
-        }
-
-        .package-icon svg {
-            width: 40px;
-            height: 40px;
-            stroke: #004AAD;
-            fill: none;
-            stroke-width: 2;
+            background: linear-gradient(90deg, #004AAD, #48ADE7);
         }
 
         .package-header {
-            text-align: center;
-            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         .package-title {
-            font-size: 2rem;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 8px;
             color: #004AAD;
-        }
-
-        .package-subtitle {
-            font-size: 1rem;
-            color: #48ADE7;
-            margin-bottom: 20px;
         }
 
         .package-price {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            text-align: right;
         }
 
-        .price-original {
-            font-size: 1.2rem;
-            color: #A1BCCC;
+        .original-price {
+            color: #004AAD;
             text-decoration: line-through;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
-        .price-current {
-            font-size: 2.5rem;
-            font-weight: 700;
+        .discounted-price {
             color: #004AAD;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
         }
 
-        .price-duration {
-            font-size: 0.9rem;
-            color: #A1BCCC;
+        .package-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 16px;
         }
 
-        .cta-button {
-            width: 100%;
-            padding: 16px 24px;
-            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 32px;
+        .package-features {
+            margin-bottom: 30px;
+            flex-grow: 1;
         }
 
-        .cta-button:hover {
-            background: linear-gradient(135deg, #1C7EB7 0%, #004AAD 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 74, 173, 0.3);
-        }
-
-        .cta-button.secondary {
-            background: transparent;
-            border: 2px solid #48ADE7;
-            color: #004AAD;
-        }
-
-        .cta-button.secondary:hover {
-            background: rgba(72, 173, 231, 0.1);
-            border-color: #004AAD;
-        }
-
-        .features-section {
-            text-align: left;
-        }
-
-        .features-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #004AAD;
-        }
-
-        .features-list {
-            list-style: none;
-            space-y: 12px;
-        }
-
-        .features-list li {
+        .feature-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 12px;
             margin-bottom: 12px;
-            color: #1C7EB7;
-            line-height: 1.5;
+            color: #555;
+            font-size: 15px;
         }
 
-        .features-list li::before {
+        .feature-item::before {
             content: '✓';
             color: #48ADE7;
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .premium-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #48ADE7 0%, #1C7EB7 100%);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(0, 74, 173, 0.3);
-        }
-
-        .info-section {
-            background: white;
-            border: 2px solid #DDE6EE;
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.08);
-        }
-
-        .info-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            color: #004AAD;
-        }
-
-        .info-section p {
-            color: #1C7EB7;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
+            font-size: 18px;
+            background: #E8F4FD;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #48ADE7;
+            justify-content: center;
+        }
+
+        .book-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: #004AAD;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        .book-button:hover {
+            background: #1C7EB7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 74, 173, 0.3);
+        }
+
+        .book-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .discount-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
             font-weight: 500;
+            display: inline-block;
+            margin-top: 5px;
         }
 
-        @media (max-width: 768px) {
-            .packages-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .header h1 {
-                font-size: 2.5rem;
-            }
-
-            .package-card {
-                padding: 32px 24px;
-            }
-
-            .contact-info {
-                flex-direction: column;
-                gap: 16px;
-            }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+            font-weight: bold;
         }
 
-        /* Modal Styles */
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+            font-weight: bold;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -328,46 +260,50 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 74, 173, 0.5);
-            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background: white;
+            background-color: white;
             margin: 5% auto;
-            padding: 0;
-            border-radius: 16px;
+            padding: 40px;
+            border-radius: 20px;
             width: 90%;
             max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 2px solid #DDE6EE;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 74, 173, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #004AAD, #48ADE7);
         }
 
         .modal-header {
-            padding: 24px 32px;
-            border-bottom: 2px solid #DDE6EE;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f8f9fa;
+            margin-bottom: 30px;
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 24px;
             font-weight: 700;
             color: #004AAD;
         }
 
         .close {
-            color: #A1BCCC;
-            font-size: 28px;
+            color: #aaa;
+            font-size: 32px;
             font-weight: bold;
             cursor: pointer;
-            border: none;
-            background: none;
             transition: color 0.3s ease;
         }
 
@@ -375,212 +311,226 @@
             color: #004AAD;
         }
 
-        .modal-body {
-            padding: 32px;
-        }
-
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
-            font-size: 0.9rem;
             font-weight: 600;
             color: #004AAD;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-size: 15px;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-input, .form-select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 15px 20px;
             border: 2px solid #DDE6EE;
-            background: white;
-            border-radius: 8px;
-            font-size: 1rem;
-            color: #004AAD;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus, .form-select:focus {
             outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #48ADE7;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
+            border-color: #004AAD;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
         }
 
         .form-row {
-            display: flex;
-            gap: 16px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         .submit-button {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #004AAD 0%, #1C7EB7 100%);
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #004AAD, #1C7EB7);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 20px;
         }
 
         .submit-button:hover {
-            background: linear-gradient(135deg, #1C7EB7 0%, #004AAD 100%);
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 74, 173, 0.3);
+        }
+
+        .submit-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .packages-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .package-card {
+                padding: 30px 25px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                padding: 30px 25px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="back-button" onclick="goBack()">← Back to Dashboard</button>
+                <div class="logo-text">LEEYANA</div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
-        <div class="header">
-            <button class="back-button" onclick="goBack()">← Back to Dashboard</button>
+        <div class="page-header">
             <h1>Health Packages</h1>
-            <p>Comprehensive healthcare solutions designed for early detection, prevention, and optimal health management</p>
+            <p>Choose from our comprehensive health checkup packages designed for your wellness</p>
         </div>
 
         <div class="packages-grid">
-            <!-- Cardiology Package -->
             <div class="package-card">
-                <div class="package-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                </div>
                 <div class="package-header">
-                    <h2 class="package-title">Cardiology</h2>
-                    <p class="package-subtitle">Complete heart health assessment</p>
+                    <div class="package-title">Cardiology Package</div>
                     <div class="package-price">
-                        <span class="price-original">$180</span>
-                        <span class="price-current">$149</span>
+                        <span class="original-price">NPR 5,718.57</span><br>
+                        <span class="discounted-price">NPR 3,999.00</span><br>
+                        <span class="discount-badge">30% OFF</span>
                     </div>
-                    <div class="price-duration">comprehensive package</div>
                 </div>
-                <button class="cta-button" onclick="openBookingModal('Cardiology Package')">Book Package</button>
-                <div class="features-section">
-                    <h3 class="features-title">Everything included:</h3>
-                    <ul class="features-list">
-                        <li>ECG (Electrocardiogram)</li>
-                        <li>2D Echocardiography</li>
-                        <li>Stress Test (TMT)</li>
-                        <li>Lipid Profile Complete</li>
-                        <li>Cardiac Enzymes (Troponin, CK-MB)</li>
-                        <li>Blood Pressure Monitoring</li>
-                        <li>Chest X-Ray</li>
-                        <li>Cardiologist Consultation</li>
-                        <li>Detailed Report & Recommendations</li>
-                    </ul>
+                <div class="package-description">
+                    Comprehensive cardiac health screening with advanced diagnostics and expert cardiologist consultation.
                 </div>
+                <div class="package-features">
+                    <div class="feature-item">ECG (Electrocardiogram)</div>
+                    <div class="feature-item">Echocardiogram</div>
+                    <div class="feature-item">Stress Test</div>
+                    <div class="feature-item">Cardiac Markers (Troponin, CK-MB)</div>
+                    <div class="feature-item">Lipid Profile</div>
+                    <div class="feature-item">Blood Pressure Monitoring</div>
+                    <div class="feature-item">Cardiologist Consultation</div>
+                    <div class="feature-item">Detailed Cardiac Report</div>
+                    <div class="feature-item">Package Duration: 3 days</div>
+                    <div class="feature-item">Insurance Coverage Support</div>
+                </div>
+                <button class="book-button" onclick="openBookingModal('Cardiology Package', 3999)">
+                    Book Package
+                </button>
             </div>
 
-            <!-- Pulmonology Package -->
             <div class="package-card">
-                <div class="popular-badge">Most Popular</div>
-                <div class="package-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 9.739 9 11 5.16-1.261 9-5.45 9-11V7L12 2z"/>
-                        <path d="M8 11h8M8 15h5M12 7v10"/>
-                    </svg>
-                </div>
                 <div class="package-header">
-                    <h2 class="package-title">Pulmonology</h2>
-                    <p class="package-subtitle">Advanced respiratory system evaluation</p>
+                    <div class="package-title">Pulmonology Package</div>
                     <div class="package-price">
-                        <span class="price-original">$220</span>
-                        <span class="price-current">$179</span>
+                        <span class="original-price">NPR 3,859.57</span><br>
+                        <span class="discounted-price">NPR 2,699.00</span><br>
+                        <span class="discount-badge">30% OFF</span>
                     </div>
-                    <div class="price-duration">comprehensive package</div>
                 </div>
-                <button class="cta-button" onclick="openBookingModal('Pulmonology Package')">Book Package</button>
-                <div class="features-section">
-                    <h3 class="features-title">Everything included:</h3>
-                    <ul class="features-list">
-                        <li>Pulmonary Function Test (PFT)</li>
-                        <li>Chest X-Ray (PA & Lateral)</li>
-                        <li>High Resolution CT Chest</li>
-                        <li>Arterial Blood Gas Analysis</li>
-                        <li>Peak Flow Meter Test</li>
-                        <li>Oxygen Saturation Monitoring</li>
-                        <li>Sputum Analysis & Culture</li>
-                        <li>Allergy Testing Panel</li>
-                        <li>Pulmonologist Consultation</li>
-                        <li>Personalized Treatment Plan</li>
-                    </ul>
+                <div class="package-description">
+                    Complete respiratory health assessment with lung function tests and pulmonologist evaluation.
                 </div>
+                <div class="package-features">
+                    <div class="feature-item">Spirometry Test</div>
+                    <div class="feature-item">Chest X-Ray</div>
+                    <div class="feature-item">Lung Function Tests</div>
+                    <div class="feature-item">Arterial Blood Gas Analysis</div>
+                    <div class="feature-item">Allergy Testing</div>
+                    <div class="feature-item">Sleep Study (Basic)</div>
+                    <div class="feature-item">Pulmonologist Consultation</div>
+                    <div class="feature-item">Respiratory Health Report</div>
+                    <div class="feature-item">Package Duration: 3 days</div>
+                    <div class="feature-item">Insurance Coverage Support</div>
+                </div>
+                <button class="book-button" onclick="openBookingModal('Pulmonology Package', 2699)">
+                    Book Package
+                </button>
             </div>
 
-            <!-- Full Body Check Package -->
             <div class="package-card">
-                <div class="premium-badge">Premium</div>
-                <div class="package-icon">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                        <path d="M8 12h8M12 8v8"/>
-                    </svg>
-                </div>
                 <div class="package-header">
-                    <h2 class="package-title">Full Body Check</h2>
-                    <p class="package-subtitle">Complete health screening & wellness assessment</p>
+                    <div class="package-title">Premium Wellness Package</div>
                     <div class="package-price">
-                        <span class="price-original">$350</span>
-                        <span class="price-current">$299</span>
+                        <span class="original-price">NPR 7,148.57</span><br>
+                        <span class="discounted-price">NPR 4,999.00</span><br>
+                        <span class="discount-badge">30% OFF</span>
                     </div>
-                    <div class="price-duration">comprehensive package</div>
                 </div>
-                <button class="cta-button secondary" onclick="openBookingModal('Full Body Check Package')">Book Premium Package</button>
-                <div class="features-section">
-                    <h3 class="features-title">Everything included:</h3>
-                    <ul class="features-list">
-                        <li>Complete Blood Count (CBC)</li>
-                        <li>Comprehensive Metabolic Panel</li>
-                        <li>Lipid Profile & Diabetes Screening</li>
-                        <li>Liver & Kidney Function Tests</li>
-                        <li>Thyroid Function Tests</li>
-                        <li>Vitamin D & B12 Levels</li>
-                        <li>Cancer Markers Screening</li>
-                        <li>ECG & Chest X-Ray</li>
-                        <li>Ultrasound Abdomen & Pelvis</li>
-                        <li>BMI & Body Composition Analysis</li>
-                        <li>Multi-specialist Consultations</li>
-                        <li>Detailed Health Report</li>
-                        <li>Nutritionist Consultation</li>
-                        <li>1-year Health Tracking</li>
-                    </ul>
+                <div class="package-description">
+                    Ultimate health assessment with comprehensive diagnostics, cancer screening, and personalized wellness plan.
                 </div>
-            </div>
-        </div>
-
-        <div class="info-section">
-            <h3>Why Choose Leeyana Hospital Health Packages?</h3>
-            <p>Our comprehensive health packages are designed by medical experts to provide thorough health assessments using state-of-the-art equipment and advanced diagnostic technologies.</p>
-            <p>Each package includes consultation with specialist doctors, detailed reports, and personalized health recommendations to help you maintain optimal health.</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span>📞</span>
-                    <span>+1 (555) 123-4567</span>
+                <div class="package-features">
+                    <div class="feature-item">Complete Blood Count (CBC)</div>
+                    <div class="feature-item">Comprehensive Metabolic Panel</div>
+                    <div class="feature-item">Cancer Screening Markers</div>
+                    <div class="feature-item">Hormone Profile</div>
+                    <div class="feature-item">Vitamin D & B12 Tests</div>
+                    <div class="feature-item">Ultrasound (Abdomen & Pelvis)</div>
+                    <div class="feature-item">ECG & Echocardiogram</div>
+                    <div class="feature-item">Chest X-Ray</div>
+                    <div class="feature-item">Specialist Consultations</div>
+                    <div class="feature-item">Nutritionist Session</div>
+                    <div class="feature-item">Personalized Health Plan</div>
+                    <div class="feature-item">3-Month Follow-up</div>
+                    <div class="feature-item">Package Duration: 5 days</div>
+                    <div class="feature-item">Insurance Coverage Support</div>
                 </div>
-                <div class="contact-item">
-                    <span>📧</span>
-                    <span>packages@leeyana.com</span>
-                </div>
-                <div class="contact-item">
-                    <span>🕒</span>
-                    <span>Mon-Sat: 8AM-6PM</span>
-                </div>
+                <button class="book-button" onclick="openBookingModal('Premium Wellness Package', 4999)">
+                    Book Package
+                </button>
             </div>
         </div>
     </div>
@@ -589,243 +539,367 @@
     <div id="bookingModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Book Health Package</h2>
-                <button class="close" onclick="closeBookingModal()">&times;</button>
+                <div class="modal-title">Book Health Package</div>
+                <span class="close" onclick="closeBookingModal()">&times;</span>
             </div>
-            <div class="modal-body">
-                <form id="bookingForm">
+            <div id="bookingForm">
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="packageName">Package Name:</label>
-                        <input type="text" id="packageName" name="packageName" readonly style="background-color: #f8f9fa;">
+                        <label class="form-label">Package Name</label>
+                        <input type="text" class="form-input" id="packageName" readonly>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="patientName">Full Name:</label>
-                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="age">Age:</label>
-                            <input type="number" id="age" name="age" placeholder="Age" min="1" max="120" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">Phone Number:</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address:</label>
-                            <input type="email" id="email" name="email" placeholder="Enter email address" required>
-                        </div>
-                    </div>
-                    
                     <div class="form-group">
-                        <label for="address">Address:</label>
-                        <textarea id="address" name="address" placeholder="Enter your complete address" required></textarea>
+                        <label class="form-label">Package Price</label>
+                        <input type="text" class="form-input" id="packagePrice" readonly>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="preferredDate">Preferred Date:</label>
-                            <input type="date" id="preferredDate" name="preferredDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="preferredTime">Preferred Time:</label>
-                            <select id="preferredTime" name="preferredTime" required>
-                                <option value="">Select time slot</option>
-                                <option value="8:00 AM">8:00 AM</option>
-                                <option value="9:00 AM">9:00 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="2:00 PM">2:00 PM</option>
-                                <option value="3:00 PM">3:00 PM</option>
-                                <option value="4:00 PM">4:00 PM</option>
-                                <option value="5:00 PM">5:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="medicalHistory">Medical History (if any):</label>
-                        <textarea id="medicalHistory" name="medicalHistory" placeholder="Please mention any existing medical conditions, medications, or allergies"></textarea>
+                        <label class="form-label">Patient Name</label>
+                        <input type="text" class="form-input" id="patientName">
                     </div>
-                    
                     <div class="form-group">
-                        <label for="emergencyContact">Emergency Contact:</label>
-                        <input type="text" id="emergencyContact" name="emergencyContact" placeholder="Name and phone number" required>
+                        <label class="form-label">Contact Number</label>
+                        <input type="tel" class="form-input" id="contactNumber">
                     </div>
-                    
-                    <button type="submit" class="submit-button">Book Appointment</button>
-                </form>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Preferred Date</label>
+                        <input type="date" class="form-input" id="selectedDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Preferred Time</label>
+                        <select class="form-select" id="selectedTime">
+                            <option value="">Select time</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-input" id="additionalNotes" rows="3" placeholder="Any special requirements or medical history to note"></textarea>
+                </div>
+
+                <button type="button" class="submit-button" id="submitBtn">
+                    Confirm Booking
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- API Connection Script -->
     <script src="../js/api.js"></script>
     <script>
-        let selectedPackage = '';
+        let selectedPackage = null;
+        let selectedPrice = null;
         let packages = [];
 
-        // Make functions globally accessible
-        window.openBookingModal = async function(packageName) {
-            console.log('Opening booking modal for package:', packageName);
-            selectedPackage = packageName;
-            document.getElementById('modalTitle').textContent = `Book ${packageName}`;
-            document.getElementById('packageName').value = packageName;
-            
-            // Show the modal
-            const modal = document.getElementById('bookingModal');
-            modal.style.display = 'block';
-            console.log('Modal display set to block');
-            
-            // Set minimum date to tomorrow
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('preferredDate').min = tomorrow.toISOString().split('T')[0];
-            
-            // Fetch and pre-fill patient information
-            try {
-                console.log('Fetching patient profile...');
-                const patientInfo = await API.getProfile();
-                console.log('Patient info received:', patientInfo);
-                if (patientInfo) {
-                    document.getElementById('patientName').value = patientInfo.full_name || '';
-                    document.getElementById('age').value = patientInfo.age || '';
-                    document.getElementById('phone').value = patientInfo.phone_number || '';
-                    document.getElementById('email').value = patientInfo.email || '';
-                    document.getElementById('address').value = patientInfo.address || '';
-                    console.log('Patient info pre-filled successfully');
-                }
-            } catch (error) {
-                console.error('Error fetching patient info:', error);
-                console.log('Continuing without pre-filling patient data...');
-                // Continue without pre-filling if there's an error
-            }
-        };
-
-        window.closeBookingModal = function() {
-            document.getElementById('bookingModal').style.display = 'none';
-            document.getElementById('bookingForm').reset();
-        };
-
-        window.goBack = function() {
-            window.location.href = '../dashboard/dashboard.html';
-        };
-
-        // Load packages from API
-        async function loadPackages() {
-            try {
-                packages = await API.getPackages();
-                console.log('Packages loaded:', packages);
-            } catch (error) {
-                console.error('Error loading packages:', error);
-                // Use default packages if API fails
-                packages = [
-                    {
-                        name: 'Basic Health Check',
-                        price: 99,
-                        description: 'Essential health screening for adults',
-                        features: ['Blood Pressure', 'Blood Sugar', 'BMI', 'General Consultation']
-                    },
-                    {
-                        name: 'Comprehensive Health Package',
-                        price: 199,
-                        description: 'Complete health assessment with detailed reports',
-                        features: ['Complete Blood Count', 'Liver Function', 'Kidney Function', 'ECG', 'Chest X-Ray']
-                    },
-                    {
-                        name: 'Premium Wellness Package',
-                        price: 299,
-                        description: 'Advanced screening with specialist consultation',
-                        features: ['All Basic Tests', 'Cardiac Screening', 'Cancer Markers', 'Specialist Consultation']
-                    }
-                ];
-            }
-        }
-
-        // Check if user is logged in
+        // Load user profile and packages when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, checking authentication...');
-            if (!Utils.isLoggedIn()) {
-                console.log('User not logged in, redirecting...');
-                Utils.showError('Please login first');
-                window.location.href = '../userauth/login.html';
-                return;
-            }
-            console.log('User is logged in, loading packages...');
-
-            // Load packages from API
+            loadUserProfile();
             loadPackages();
         });
 
+        // Load user profile to pre-fill form
+        async function loadUserProfile() {
+            try {
+                const profile = await API.getProfile();
+                // Store profile data for use in booking modal
+                window.userProfile = profile;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Load packages from database
+        async function loadPackages() {
+            try {
+                const response = await fetch('http://localhost:8000/api/packages/');
+                if (response.ok) {
+                    packages = await response.json();
+                    displayPackages();
+                } else {
+                    console.error('Failed to load packages');
+                    // Fallback to default packages if API fails
+                    displayDefaultPackages();
+                }
+            } catch (error) {
+                console.error('Error loading packages:', error);
+                // Fallback to default packages if API fails
+                displayDefaultPackages();
+            }
+        }
+
+        // Display packages from database
+        function displayPackages() {
+            const packagesGrid = document.querySelector('.packages-grid');
+            if (packages.length === 0) {
+                displayDefaultPackages();
+                return;
+            }
+
+            packagesGrid.innerHTML = packages.map(package => `
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="package-title">${package.name}</div>
+                        <div class="package-price">
+                            <span class="original-price">NPR ${(package.price * 1.43).toLocaleString()}</span><br>
+                            <span class="discounted-price">NPR ${package.price.toLocaleString()}</span>
+                            <span class="discount-badge">30% OFF</span>
+                        </div>
+                    </div>
+                    <div class="package-description">
+                        ${package.description}
+                    </div>
+                    <div class="package-features">
+                        <div class="feature-item">Package Duration: ${package.duration_days} days</div>
+                        <div class="feature-item">Comprehensive Health Screening</div>
+                        <div class="feature-item">Expert Doctor Consultation</div>
+                        <div class="feature-item">Detailed Health Report</div>
+                        <div class="feature-item">Follow-up Recommendations</div>
+                        <div class="feature-item">Insurance Coverage Support</div>
+                    </div>
+                    <button class="book-button" onclick="openBookingModal('${package.name}', ${package.price})">
+                        Book Package
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Display default packages if API fails
+        function displayDefaultPackages() {
+            const packagesGrid = document.querySelector('.packages-grid');
+            packagesGrid.innerHTML = `
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="package-title">Cardiology Package</div>
+                        <div class="package-price">
+                            <span class="original-price">NPR 40,000</span><br>
+                            <span class="discounted-price">NPR 28,000</span>
+                            <span class="discount-badge">30% OFF</span>
+                        </div>
+                    </div>
+                    <div class="package-description">
+                        Comprehensive cardiac health screening with advanced diagnostics and expert cardiologist consultation.
+                    </div>
+                    <div class="package-features">
+                        <div class="feature-item">ECG (Electrocardiogram)</div>
+                        <div class="feature-item">Echocardiogram</div>
+                        <div class="feature-item">Stress Test</div>
+                        <div class="feature-item">Cardiac Markers (Troponin, CK-MB)</div>
+                        <div class="feature-item">Lipid Profile</div>
+                        <div class="feature-item">Blood Pressure Monitoring</div>
+                        <div class="feature-item">Cardiologist Consultation</div>
+                        <div class="feature-item">Detailed Cardiac Report</div>
+                        <div class="feature-item">Package Duration: 3 days</div>
+                        <div class="feature-item">Insurance Coverage Support</div>
+                    </div>
+                    <button class="book-button" onclick="openBookingModal('Cardiology Package', 28000)">
+                        Book Package
+                    </button>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="package-title">Pulmonology Package</div>
+                        <div class="package-price">
+                            <span class="original-price">NPR 36,000</span><br>
+                            <span class="discounted-price">NPR 25,200</span>
+                            <span class="discount-badge">30% OFF</span>
+                        </div>
+                    </div>
+                    <div class="package-description">
+                        Complete respiratory health assessment with lung function tests and pulmonologist evaluation.
+                    </div>
+                    <div class="package-features">
+                        <div class="feature-item">Spirometry Test</div>
+                        <div class="feature-item">Chest X-Ray</div>
+                        <div class="feature-item">Lung Function Tests</div>
+                        <div class="feature-item">Arterial Blood Gas Analysis</div>
+                        <div class="feature-item">Allergy Testing</div>
+                        <div class="feature-item">Sleep Study (Basic)</div>
+                        <div class="feature-item">Pulmonologist Consultation</div>
+                        <div class="feature-item">Respiratory Health Report</div>
+                        <div class="feature-item">Package Duration: 3 days</div>
+                        <div class="feature-item">Insurance Coverage Support</div>
+                    </div>
+                    <button class="book-button" onclick="openBookingModal('Pulmonology Package', 25200)">
+                        Book Package
+                    </button>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header">
+                        <div class="package-title">Premium Wellness Package</div>
+                        <div class="package-price">
+                            <span class="original-price">NPR 70,000</span><br>
+                            <span class="discounted-price">NPR 49,000</span>
+                            <span class="discount-badge">30% OFF</span>
+                        </div>
+                    </div>
+                    <div class="package-description">
+                        Ultimate health assessment with comprehensive diagnostics, cancer screening, and personalized wellness plan.
+                    </div>
+                    <div class="package-features">
+                        <div class="feature-item">Complete Blood Count (CBC)</div>
+                        <div class="feature-item">Comprehensive Metabolic Panel</div>
+                        <div class="feature-item">Cancer Screening Markers</div>
+                        <div class="feature-item">Hormone Profile</div>
+                        <div class="feature-item">Vitamin D & B12 Tests</div>
+                        <div class="feature-item">Ultrasound (Abdomen & Pelvis)</div>
+                        <div class="feature-item">ECG & Echocardiogram</div>
+                        <div class="feature-item">Chest X-Ray</div>
+                        <div class="feature-item">Specialist Consultations</div>
+                        <div class="feature-item">Nutritionist Session</div>
+                        <div class="feature-item">Personalized Health Plan</div>
+                        <div class="feature-item">3-Month Follow-up</div>
+                        <div class="feature-item">Package Duration: 5 days</div>
+                        <div class="feature-item">Insurance Coverage Support</div>
+                    </div>
+                    <button class="book-button" onclick="openBookingModal('Premium Wellness Package', 49000)">
+                        Book Package
+                    </button>
+                </div>
+            `;
+        }
+
+        function openBookingModal(packageName, price) {
+            selectedPackage = packageName;
+            selectedPrice = price;
+            
+            document.getElementById('packageName').value = packageName;
+            document.getElementById('packagePrice').value = `NPR ${price.toLocaleString()}`;
+            
+            // Pre-fill patient details if available
+            if (window.userProfile) {
+                document.getElementById('patientName').value = window.userProfile.full_name || '';
+                document.getElementById('contactNumber').value = window.userProfile.phone_number || '';
+            }
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('selectedDate').min = today;
+            
+            document.getElementById('bookingModal').style.display = 'block';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            // Clear form fields manually since we're using a div instead of form
+            document.getElementById('patientName').value = '';
+            document.getElementById('contactNumber').value = '';
+            document.getElementById('selectedDate').value = '';
+            document.getElementById('selectedTime').value = '';
+            document.getElementById('additionalNotes').value = '';
+            document.getElementById('packageName').value = '';
+            document.getElementById('packagePrice').value = '';
+        }
+
+        // Handle form submission
+        document.getElementById('submitBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            console.log('Button click handled, using direct fetch call');
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            try {
+                const formData = {
+                    package_name: selectedPackage,
+                    selected_date: document.getElementById('selectedDate').value,
+                    patient_details: {
+                        name: document.getElementById('patientName').value,
+                        contact_number: document.getElementById('contactNumber').value,
+                        additional_notes: document.getElementById('additionalNotes').value,
+                        selected_time: document.getElementById('selectedTime').value
+                    }
+                };
+
+                console.log('Submitting package booking:', formData);
+                
+                // Get token
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    throw new Error('Please login first to purchase packages');
+                }
+
+                // Make direct fetch call with explicit content type
+                const response = await fetch('http://localhost:8000/api/packages/purchase/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || errorData.error || `API request failed: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('API call successful:', result);
+                
+                showSuccess('Package booked successfully! We will contact you shortly to confirm.');
+                closeBookingModal();
+                
+            } catch (error) {
+                console.error('API call failed:', error);
+                showError(error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm Booking';
+            }
+        });
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            document.querySelector('.packages-grid').insertBefore(successDiv, document.querySelector('.package-card'));
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            document.querySelector('.packages-grid').insertBefore(errorDiv, document.querySelector('.package-card'));
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
         // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
+        window.onclick = function(event) {
             const modal = document.getElementById('bookingModal');
             if (event.target === modal) {
                 closeBookingModal();
             }
-        });
-
-        // ESC key to close modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBookingModal();
-            }
-        });
-
-        // Form submission
-        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitButton = document.querySelector('.submit-button');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Processing...';
-            
-            try {
-                const formData = {
-                    package_name: selectedPackage,
-                    selected_date: document.getElementById('preferredDate').value,
-                    patient_details: {
-                        name: document.getElementById('patientName').value,
-                        age: document.getElementById('age').value,
-                        phone: document.getElementById('phone').value,
-                        email: document.getElementById('email').value,
-                        address: document.getElementById('address').value,
-                        preferred_time: document.getElementById('preferredTime').value,
-                        medical_history: document.getElementById('medicalHistory').value,
-                        emergency_contact: document.getElementById('emergencyContact').value
-                    }
-                };
-                
-                await API.buyPackage(formData);
-                
-                Utils.showSuccess('Health package booked successfully! You will receive a confirmation email shortly.');
-                closeBookingModal();
-                
-            } catch (error) {
-                Utils.showError(error.message);
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Book Package';
-            }
-        });
-
-        // Smooth scrolling animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.package-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
+        }
     </script>
 </body>
 </html>

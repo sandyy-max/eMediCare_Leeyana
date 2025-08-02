@@ -17,7 +17,21 @@ class API {
         // Handle body for POST/PUT requests
         if (options.body && typeof options.body === 'object') {
             config.body = JSON.stringify(options.body);
+            // Ensure content type is set correctly for JSON requests
+            config.headers['Content-Type'] = 'application/json';
         }
+
+        console.log('API Request Config:', {
+            url: url,
+            method: config.method,
+            headers: config.headers,
+            body: config.body
+        });
+        
+        // Additional debugging for content type
+        console.log('Content-Type header:', config.headers['Content-Type']);
+        console.log('Body type:', typeof config.body);
+        console.log('Body stringified:', JSON.stringify(config.body));
 
         try {
             const response = await fetch(url, config);
@@ -66,14 +80,13 @@ class API {
     }
 
     static async buyPackage(packageData) {
-        // Temporarily remove token requirement for testing
-        // const token = localStorage.getItem('access_token');
-        // if (!token) {
-        //     throw new Error('Please login first to purchase packages');
-        // }
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Please login first to purchase packages');
+        }
         return this.request('/packages/purchase/', {
             method: 'POST',
-            // headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${token}` },
             body: packageData
         });
     }
@@ -113,7 +126,7 @@ class API {
         if (!token) {
             throw new Error('Authentication required');
         }
-        return this.request('/clinical/history/', {
+        return this.request('/medical-history/', {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -177,6 +190,46 @@ class API {
             headers: { 'Authorization': `Bearer ${token}` },
             body: preferencesData
         });
+    }
+
+    // Notification methods
+    static async getNotifications() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request('/notifications/', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    }
+
+    static async markNotificationAsRead(notificationId) {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request(`/notifications/${notificationId}/mark-read/`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    }
+
+    static async getUnreadCount() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            return 0;
+        }
+        try {
+            const response = await this.request('/notifications/unread-count/', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return response.count || 0;
+        } catch (error) {
+            console.error('Error getting unread count:', error);
+            return 0;
+        }
     }
 }
 
