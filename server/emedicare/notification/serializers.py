@@ -21,7 +21,8 @@ class NotificationCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # If send_to_all is True, create notifications for all patients
         if validated_data.get('send_to_all'):
-            patients = self.context['request'].user.objects.filter(role='patient')
+            from userauth.models import User
+            patients = User.objects.filter(role='patient')
             notifications = []
             for patient in patients:
                 notification_data = validated_data.copy()
