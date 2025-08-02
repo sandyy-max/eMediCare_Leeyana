@@ -31,4 +31,15 @@ class UserLoginSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['phone_number', 'role', 'full_name', 'email', 'address', 'age', 'gender', 'department']
+        fields = ['phone_number', 'role', 'full_name', 'email', 'address', 'age', 'gender', 'blood_group', 'emergency_contact', 'department']
+        read_only_fields = ['phone_number', 'role']  # These cannot be changed by users
+
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, min_length=6)
+    
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value

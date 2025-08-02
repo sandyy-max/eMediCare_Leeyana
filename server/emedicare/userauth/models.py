@@ -34,6 +34,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=255, blank=True, null=True)
     age = models.PositiveIntegerField(blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
+    blood_group = models.CharField(max_length=5, blank=True, null=True)
+    emergency_contact = models.CharField(max_length=20, blank=True, null=True)
 
     # Doctor-specific
     department = models.CharField(max_length=100, blank=True, null=True)
