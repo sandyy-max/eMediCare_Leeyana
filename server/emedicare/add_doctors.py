@@ -14,46 +14,46 @@ def create_doctors():
     Doctor.objects.all().delete()
     print("Cleared existing doctors")
 
-    # Create sample doctors
+    # Create doctors with user's preferred names
     doctors = [
         {
-            'name': 'Dr. Sarah Johnson',
+            'name': 'Dr. Puspa',
             'department': 'Cardiology',
             'available_days': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             'is_available': True
         },
         {
-            'name': 'Dr. Michael Chen',
+            'name': 'Dr. Darshan',
             'department': 'Cardiology',
             'available_days': ['Monday', 'Wednesday', 'Friday'],
             'is_available': True
         },
         {
-            'name': 'Dr. Emily Rodriguez',
+            'name': 'Dr. Subham',
             'department': 'Pulmonology',
             'available_days': ['Tuesday', 'Thursday', 'Saturday'],
             'is_available': True
         },
         {
-            'name': 'Dr. David Kim',
+            'name': 'Dr. Sandhya',
             'department': 'Pulmonology',
             'available_days': ['Monday', 'Wednesday', 'Friday'],
             'is_available': True
         },
         {
-            'name': 'Dr. Lisa Thompson',
+            'name': 'Dr. Sabnam',
             'department': 'Dermatology',
             'available_days': ['Monday', 'Tuesday', 'Thursday', 'Friday'],
             'is_available': True
         },
         {
-            'name': 'Dr. James Wilson',
+            'name': 'Dr. Sudan',
             'department': 'Pediatrics',
             'available_days': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             'is_available': True
         },
         {
-            'name': 'Dr. Maria Garcia',
+            'name': 'Dr. Anjali',
             'department': 'Gynecology',
             'available_days': ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             'is_available': True
@@ -71,3 +71,4 @@ def create_doctors():
 
 if __name__ == "__main__":
     create_doctors() 
+    

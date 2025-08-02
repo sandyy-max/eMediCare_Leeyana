@@ -16,7 +16,9 @@ def create_medicine_reminders(sender, instance, created, **kwargs):
         while current <= end:
             message = f"Reminder: Take your medicines as prescribed on {current.strftime('%Y-%m-%d')} at {time_str}."
             Notification.objects.create(
-                user=instance.patient,
-                message=message
+                patient=instance.patient,
+                title="Medicine Reminder",
+                message=message,
+                notification_type="medicine"
             )
             current += timedelta(days=1)
