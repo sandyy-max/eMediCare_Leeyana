@@ -146,6 +146,68 @@ class PatientAppointmentHistoryView(APIView):
         return Response(serializer.data)
 
 
+# ✅ View Patient Upcoming Appointments
+class PatientUpcomingAppointmentsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from datetime import date
+        patient = request.user
+        
+        # Get confirmed appointments with future dates
+        upcoming_appointments = []
+        
+        # Get all confirmed appointments for this patient
+        confirmed_appointments = Appointment.objects.filter(
+            patient=patient, 
+            is_confirmed=True
+        ).prefetch_related('confirmation', 'confirmation__doctor')
+        
+        for appointment in confirmed_appointments:
+            # Check if appointment has confirmation details
+            if hasattr(appointment, 'confirmation') and appointment.confirmation:
+                confirmation = appointment.confirmation
+                if confirmation.appointment_date >= date.today():
+                    upcoming_appointments.append({
+                        'id': appointment.id,
+                        'patient_name': appointment.full_name,
+                        'department': appointment.department,
+                        'doctor_name': confirmation.doctor.name,
+                        'appointment_date': confirmation.appointment_date,
+                        'appointment_time': confirmation.appointment_time,
+                        'symptoms': appointment.symptoms,
+                        'phone_number': appointment.phone_number,
+                        'email': appointment.email,
+                        'created_at': appointment.created_at
+                    })
+            else:
+                # Handle appointments that are confirmed but missing confirmation details
+                # Use appointment creation date as fallback
+                appointment_date = appointment.created_at.date()
+                if appointment_date >= date.today():
+                    upcoming_appointments.append({
+                        'id': appointment.id,
+                        'patient_name': appointment.full_name,
+                        'department': appointment.department,
+                        'doctor_name': 'To be assigned',  # Default since no doctor assigned
+                        'appointment_date': appointment_date,
+                        'appointment_time': '09:00:00',  # Default time
+                        'symptoms': appointment.symptoms,
+                        'phone_number': appointment.phone_number,
+                        'email': appointment.email,
+                        'created_at': appointment.created_at,
+                        'status': 'Confirmed (Pending Details)'
+                    })
+        
+        # Sort by appointment date and time
+        upcoming_appointments.sort(key=lambda x: (x['appointment_date'], x['appointment_time']))
+        
+        return Response({
+            'upcoming_appointments': upcoming_appointments,
+            'total_upcoming': len(upcoming_appointments)
+        })
+
+
 # ✅ Get Doctors by Department
 class DoctorsByDepartmentView(APIView):
     permission_classes = [IsAuthenticated]

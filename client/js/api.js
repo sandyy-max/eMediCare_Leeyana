@@ -85,6 +85,17 @@ class API {
         });
     }
 
+    static async getUpcomingAppointments() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request('/appointments/upcoming/', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+    }
+
     static async rejectAppointment(appointmentId, reason) {
         const token = localStorage.getItem('access_token');
         if (!token) {

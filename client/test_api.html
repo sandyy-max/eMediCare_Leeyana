@@ -45,19 +45,19 @@
             try {
                 const token = localStorage.getItem('access_token');
                 if (!token) {
-                    showResult('authResult', '❌ No token found. Please login first.', false);
+                    showResult('authResult', 'No token found. Please login first.', false);
                     return;
                 }
-                showResult('authResult', `✅ Token found: ${token.substring(0, 20)}...`, true);
+                showResult('authResult', `Token found: ${token.substring(0, 20)}...`, true);
             } catch (error) {
-                showResult('authResult', `❌ Auth error: ${error.message}`, false);
+                showResult('authResult', `Auth error: ${error.message}`, false);
             }
         }
 
         async function testMedicalHistory() {
             try {
                 if (typeof API === 'undefined') {
-                    showResult('medicalResult', '❌ API is not defined!', false);
+                    showResult('medicalResult', 'API is not defined!', false);
                     return;
                 }
 
@@ -65,27 +65,27 @@
                 console.log('Medical History Response:', response);
                 
                 if (response.prescriptions) {
-                    showResult('medicalResult', `✅ Medical history loaded successfully! Found ${response.prescriptions.length} prescriptions.`, true);
+                    showResult('medicalResult', `Medical history loaded successfully! Found ${response.prescriptions.length} prescriptions.`, true);
                 } else {
-                    showResult('medicalResult', '✅ Medical history loaded but no prescriptions found.', true);
+                    showResult('medicalResult', ' Medical history loaded but no prescriptions found.', true);
                 }
             } catch (error) {
-                showResult('medicalResult', `❌ Medical history error: ${error.message}`, false);
+                showResult('medicalResult', `Medical history error: ${error.message}`, false);
             }
         }
 
         async function testProfile() {
             try {
                 if (typeof API === 'undefined') {
-                    showResult('profileResult', '❌ API is not defined!', false);
+                    showResult('profileResult', ' API is not defined!', false);
                     return;
                 }
 
                 const response = await API.getProfile();
                 console.log('Profile Response:', response);
-                showResult('profileResult', `✅ Profile loaded successfully! Name: ${response.full_name}`, true);
+                showResult('profileResult', ` Profile loaded successfully! Name: ${response.full_name}`, true);
             } catch (error) {
-                showResult('profileResult', `❌ Profile error: ${error.message}`, false);
+                showResult('profileResult', ` Profile error: ${error.message}`, false);
             }
         }
 
