@@ -324,21 +324,4 @@ This project is licensed under the MIT License.
 
 ---
 
-**Made with ❤️ for better healthcare management**
-
-## 🆕 Recent Updates
-
-### Version 2.2 (Latest)
-- ✅ **Enhanced Pharmacy System** - Complete medicine request system with prescription file upload
-- ✅ **File Upload Support** - PNG/JPG prescription images (5MB max, 10KB min) with validation
-- ✅ **Admin Medicine Management** - Approve/reject requests with comments, mark as "in progress"
-- ✅ **Comprehensive Notifications** - All medicine request status updates sent to patients
-- ✅ **Local Storage Implementation** - File storage ready with cloud storage discussion
-- ✅ **Enhanced Appointment System** - Fixed appointment display issues and added proper confirmation handling
-- ✅ **Improved Medical History** - Complete CRUD operations for medical records
-- ✅ **Enhanced Dashboard** - Professional design with health news and better navigation
-- ✅ **Unified Design** - Consistent design language across all pages
-- ✅ **Better Error Handling** - Improved API error handling and user feedback
-- ✅ **Admin Notifications** - Enhanced notification system for administrators
-- ✅ **Database Optimization** - Improved data structure and relationships
-- ✅ **Code Cleanup** - Removed unnecessary test files and improved code organization 
+**Made with ❤️ by SANDHYA for better healthcare management**
