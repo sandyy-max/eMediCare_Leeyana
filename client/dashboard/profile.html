@@ -165,6 +165,17 @@
                 const response = await API.getProfile();
                 userProfile = response;
                 console.log('User profile loaded:', userProfile);
+                
+                // Load medical info separately
+                try {
+                    const medicalResponse = await API.getMedicalInfo();
+                    userProfile.medical_info = medicalResponse;
+                    console.log('Medical info loaded:', medicalResponse);
+                } catch (medicalError) {
+                    console.error('Error loading medical info:', medicalError);
+                    userProfile.medical_info = {};
+                }
+                
                 updateProfileDisplay();
                 renderAllTabs();
                 updateStats();
@@ -290,25 +301,27 @@
                 <form id="medicalForm">
                     <div class="form-group">
                         <label for="allergies">Allergies</label>
-                        <textarea id="allergies" rows="3" placeholder="List any known allergies or 'None'">${userProfile.medical_history ? userProfile.medical_history.allergies || '' : ''}</textarea>
+                        <textarea id="allergies" rows="3" placeholder="List any known allergies or 'None'">${userProfile.medical_info ? userProfile.medical_info.allergies || '' : ''}</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label for="chronicConditions">Chronic Conditions</label>
-                        <textarea id="chronicConditions" rows="3" placeholder="List any chronic medical conditions or 'None'">${userProfile.medical_history ? userProfile.medical_history.chronic_conditions || '' : ''}</textarea>
+                        <textarea id="chronicConditions" rows="3" placeholder="List any chronic medical conditions or 'None'">${userProfile.medical_info ? userProfile.medical_info.chronic_conditions || '' : ''}</textarea>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="currentMedications">Current Medications</label>
-                        <textarea id="currentMedications" rows="3" placeholder="List current medications or 'None'">${userProfile.medical_history ? userProfile.medical_history.current_medications || '' : ''}</textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="surgeries">Previous Surgeries</label>
-                        <textarea id="surgeries" rows="3" placeholder="List previous surgeries or 'None'">${userProfile.medical_history ? userProfile.medical_history.surgeries || '' : ''}</textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-button">Update Medical Information</button>
+                                         <div class="form-group">
+                         <label for="currentMedications">Current Medications</label>
+                         <textarea id="currentMedications" rows="3" placeholder="List current medications or 'None'">${userProfile.medical_info ? userProfile.medical_info.current_medications || '' : ''}</textarea>
+                     </div>
+                     
+                     <div class="form-group">
+                         <label for="surgeries">Previous Surgeries</label>
+                         <textarea id="surgeries" rows="3" placeholder="List previous surgeries or 'None'">${userProfile.medical_info ? userProfile.medical_info.surgeries || '' : ''}</textarea>
+                     </div>
+                     
+                     <div class="form-group">
+                         <button type="submit" class="submit-button">Update Medical Information</button>
+                     </div>
                 </form>
             `;
 
@@ -458,6 +471,15 @@
                 
                 await API.updateMedicalInfo(formData);
                 Utils.showSuccess('Medical information updated successfully!');
+                
+                // Reload medical info to show updated data
+                try {
+                    const medicalResponse = await API.getMedicalInfo();
+                    userProfile.medical_info = medicalResponse;
+                    renderMedicalInfo();
+                } catch (medicalError) {
+                    console.error('Error reloading medical info:', medicalError);
+                }
                 
             } catch (error) {
                 Utils.showError(error.message);

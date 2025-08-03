@@ -36,6 +36,21 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=10, blank=True, null=True)
     blood_group = models.CharField(max_length=5, blank=True, null=True)
     emergency_contact = models.CharField(max_length=20, blank=True, null=True)
+    
+    # Medical Information
+    allergies = models.TextField(blank=True, null=True, help_text="List of allergies")
+    chronic_conditions = models.TextField(blank=True, null=True, help_text="Current medical conditions")
+    current_medications = models.TextField(blank=True, null=True, help_text="Current medications being taken")
+    surgeries = models.TextField(blank=True, null=True, help_text="Previous surgeries")
+    emergency_phone = models.CharField(max_length=20, blank=True, null=True, help_text="Emergency contact phone number")
+    height = models.CharField(max_length=10, blank=True, null=True, help_text="Height in cm")
+    weight = models.CharField(max_length=10, blank=True, null=True, help_text="Weight in kg")
+    blood_pressure = models.CharField(max_length=20, blank=True, null=True, help_text="Blood pressure reading")
+    diabetes_status = models.CharField(max_length=20, blank=True, null=True, help_text="Diabetes status")
+    smoking_status = models.CharField(max_length=20, blank=True, null=True, help_text="Smoking status")
+    alcohol_consumption = models.CharField(max_length=20, blank=True, null=True, help_text="Alcohol consumption status")
+    family_history = models.TextField(blank=True, null=True, help_text="Family medical history")
+    lifestyle_info = models.TextField(blank=True, null=True, help_text="Lifestyle information")
 
     # Doctor-specific
     department = models.CharField(max_length=100, blank=True, null=True)

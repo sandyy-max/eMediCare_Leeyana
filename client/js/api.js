@@ -149,7 +149,7 @@ class API {
         if (!token) {
             throw new Error('Authentication required');
         }
-        return this.request('/medical-history/', {
+        return this.request('/clinical/history/', {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -176,6 +176,17 @@ class API {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
             body: profileData
+        });
+    }
+
+    static async getMedicalInfo() {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Authentication required');
+        }
+        return this.request('/user/medical-info/', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
     }
 

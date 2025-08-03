@@ -46,13 +46,14 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
 
     ordering = ['phone_number']
-    list_display = ['phone_number', 'full_name', 'email', 'role', 'is_staff']
+    list_display = ['phone_number', 'full_name', 'email', 'role', 'blood_group', 'is_staff']
     search_fields = ['phone_number', 'full_name', 'email']
     list_filter = ['is_staff', 'role']
 
     fieldsets = (
         (None, {'fields': ('phone_number', 'password')}),
         ('Personal Info', {'fields': ('full_name', 'email', 'address', 'age', 'gender', 'role')}),
+        ('Medical Information', {'fields': ('blood_group', 'allergies', 'chronic_conditions', 'current_medications', 'surgeries', 'emergency_contact', 'emergency_phone', 'height', 'weight', 'blood_pressure', 'diabetes_status', 'smoking_status', 'alcohol_consumption', 'family_history', 'lifestyle_info')}),
         ('Permissions', {'fields': ('is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )

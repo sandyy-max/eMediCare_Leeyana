@@ -7,9 +7,24 @@ from datetime import timedelta, datetime
 @receiver(post_save, sender=Prescription)
 def create_medicine_reminders(sender, instance, created, **kwargs):
     if created:
+        # Create notification for new prescription
+        prescription_notification = Notification.objects.create(
+            patient=instance.patient,
+            title="New Prescription Added",
+            message=f"Dr. {instance.doctor.name} has prescribed new medicines for {instance.diagnosis}. Check your medical history for details.",
+            notification_type="medicine"
+        )
+        
+        # Create medicine reminders
         start = instance.reminder_start_date
         end = instance.reminder_end_date
-        time_str = instance.reminder_time.strftime('%H:%M')
+        
+        # Handle reminder_time properly - it's a TimeField
+        if hasattr(instance.reminder_time, 'strftime'):
+            time_str = instance.reminder_time.strftime('%H:%M')
+        else:
+            # If it's a string, try to parse it
+            time_str = str(instance.reminder_time)
 
         # Loop through each date in reminder range
         current = start

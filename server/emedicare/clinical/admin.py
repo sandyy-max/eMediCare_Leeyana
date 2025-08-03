@@ -19,3 +19,10 @@ class PrescriptionAdmin(admin.ModelAdmin):
             'fields': ('prescribed_date', 'reminder_time', 'reminder_start_date', 'reminder_end_date')
         }),
     )
+    
+    def save_model(self, request, obj, form, change):
+        if not change:  # Only for new prescriptions
+            # Ensure the prescription is properly linked
+            obj.patient = obj.patient  # Ensure patient is set
+            obj.doctor = obj.doctor    # Ensure doctor is set
+        super().save_model(request, obj, form, change)
