@@ -17,6 +17,7 @@ A comprehensive hospital management system built with Django REST Framework and 
 - **Appointment Tracking** - View appointment status and history
 - **Admin Approval** - Administrators can approve, confirm, or reject appointments
 - **Notification System** - Real-time notifications for appointment status changes
+- **Upcoming Appointments** - View confirmed appointments with doctor details
 
 ### 💊 Pharmacy System
 - **Medicine Catalog** - Browse available medicines with details
@@ -29,24 +30,28 @@ A comprehensive hospital management system built with Django REST Framework and 
 - **Doctor Assignments** - Track which doctors provided treatment
 - **Medicine Reminders** - Automated reminders for medicine schedules
 - **Medical Reports** - Access to medical reports and diagnoses
+- **CRUD Operations** - Complete Create, Read, Update, Delete functionality
 
 ### 🏥 Health Packages
 - **Package Browsing** - View available health checkup packages with pricing
 - **Package Purchase** - Buy health packages online with discount options
 - **Package Management** - Track purchased packages and their status
 - **Admin Package Management** - Add and manage health packages
+- **Discount Display** - Show original and discounted prices
 
 ### 📱 Notification System
 - **Real-time Notifications** - Comprehensive notification system for all activities
 - **Notification Types** - System, appointment, medicine, package, and admin notifications
 - **Read/Unread Status** - Track notification status
 - **Unified Notification Page** - Centralized notification management
+- **Admin Notifications** - Administrators receive notifications for all activities
 
 ### 🎨 Modern UI/UX
 - **Responsive Design** - Works on all devices
 - **Consistent Design Language** - Unified design across all pages
 - **Interactive Elements** - Modern buttons, forms, and navigation
 - **Loading States** - Smooth user experience with loading indicators
+- **Professional Dashboard** - Enhanced patient dashboard with health news
 
 ## 🛠️ Technology Stack
 
@@ -111,15 +116,12 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### Step 6: Add Sample Data (Optional)
+### Step 6: Start the Server
 ```bash
-python add_doctors.py
-python add_sample_prescriptions.py
-python add_packages_detailed.py
-```
+# Option 1: Using the batch file (Windows)
+start_server.bat
 
-### Step 7: Start the Server
-```bash
+# Option 2: Manual start
 python manage.py runserver
 ```
 
@@ -142,6 +144,7 @@ The server will be available at `http://localhost:8000`
 - **Buy Health Packages** - Purchase health checkup packages with discounts
 - **Manage Profile** - Update personal information and change password
 - **View Notifications** - Check all system notifications in one place
+- **View My Appointments** - See upcoming appointments with doctor details
 
 ## 📁 Project Structure
 
@@ -155,7 +158,8 @@ eMediCare_last/
 │   │   └── appointment.html   # Appointment booking
 │   ├── dashboard/             # User dashboard
 │   │   ├── dashboard.html
-│   │   └── profile.html
+│   │   ├── profile.html
+│   │   └── my_appointments.html
 │   ├── package/              # Health packages
 │   │   └── package.html
 │   ├── pharmacy/             # Pharmacy system
@@ -173,9 +177,8 @@ eMediCare_last/
 │       ├── pharmacy/         # Pharmacy system
 │       ├── package/          # Health packages
 │       ├── notification/     # Notifications
-│       ├── add_doctors.py    # Sample doctor data
-│       ├── add_sample_prescriptions.py
-│       └── add_packages_detailed.py
+│       ├── manage.py         # Django management script
+│       └── db.sqlite3        # Database file
 ├── requirements.txt           # Python dependencies
 ├── start_server.bat          # Windows server startup script
 └── README.md                 # This file
@@ -216,6 +219,7 @@ DATABASES = {
 - Purchase health packages with discount options
 - Manage profile and change password
 - Receive real-time notifications for all activities
+- View upcoming appointments with doctor details
 
 ### Administrator
 - Approve, confirm, or reject appointments
@@ -245,6 +249,7 @@ DATABASES = {
 4. **Medicine Requests** - Test medicine request with prescription upload
 5. **Notification System** - Test all notification types
 6. **Profile Management** - Test profile updates and password changes
+7. **Medical History** - Test CRUD operations for medical records
 
 ### API Testing
 Use tools like Postman or curl to test API endpoints:
@@ -264,12 +269,20 @@ curl -X POST http://localhost:8000/api/appointments/ \
 # Get Medical History
 curl -X GET http://localhost:8000/api/clinical/history/ \
   -H "Authorization: Bearer YOUR_TOKEN"
+
+# Get Upcoming Appointments
+curl -X GET http://localhost:8000/api/appointments/upcoming/ \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 ## 🚀 Deployment
 
 ### Development
 ```bash
+# Windows
+start_server.bat
+
+# Manual
 python manage.py runserver
 ```
 
@@ -315,11 +328,12 @@ This project is licensed under the MIT License.
 
 ## 🆕 Recent Updates
 
-### Version 2.0 (Latest)
-- ✅ **Enhanced Notification System** - Comprehensive notification management
-- ✅ **Dynamic Doctor Selection** - Department-based doctor loading
-- ✅ **Improved UI/UX** - Modern, consistent design across all pages
-- ✅ **Enhanced Security** - Better authentication and validation
-- ✅ **Medical History Integration** - Complete prescription tracking
-- ✅ **Admin Management** - Enhanced admin interface with Jazzmin
-- ✅ **Real-time Updates** - Live status updates for all features 
+### Version 2.1 (Latest)
+- ✅ **Enhanced Appointment System** - Fixed appointment display issues and added proper confirmation handling
+- ✅ **Improved Medical History** - Complete CRUD operations for medical records
+- ✅ **Enhanced Dashboard** - Professional design with health news and better navigation
+- ✅ **Unified Design** - Consistent design language across all pages
+- ✅ **Better Error Handling** - Improved API error handling and user feedback
+- ✅ **Admin Notifications** - Enhanced notification system for administrators
+- ✅ **Database Optimization** - Improved data structure and relationships
+- ✅ **Code Cleanup** - Removed unnecessary test files and improved code organization 
