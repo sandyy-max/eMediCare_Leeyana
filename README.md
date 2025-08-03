@@ -328,7 +328,12 @@ This project is licensed under the MIT License.
 
 ## 🆕 Recent Updates
 
-### Version 2.1 (Latest)
+### Version 2.2 (Latest)
+- ✅ **Enhanced Pharmacy System** - Complete medicine request system with prescription file upload
+- ✅ **File Upload Support** - PNG/JPG prescription images (5MB max, 10KB min) with validation
+- ✅ **Admin Medicine Management** - Approve/reject requests with comments, mark as "in progress"
+- ✅ **Comprehensive Notifications** - All medicine request status updates sent to patients
+- ✅ **Local Storage Implementation** - File storage ready with cloud storage discussion
 - ✅ **Enhanced Appointment System** - Fixed appointment display issues and added proper confirmation handling
 - ✅ **Improved Medical History** - Complete CRUD operations for medical records
 - ✅ **Enhanced Dashboard** - Professional design with health news and better navigation

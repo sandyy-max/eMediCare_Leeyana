@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\emc\server\env
+set VIRTUAL_ENV=C:\Users\DELL MCC\Downloads\eMediCare_last\server\env
 
 if not defined PROMPT set PROMPT=$P$G
 

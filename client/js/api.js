@@ -135,10 +135,26 @@ class API {
         if (!token) {
             throw new Error('Please login first to request medicines');
         }
+        
+        // Check if there's a file to upload
+        const formData = new FormData();
+        
+        // Add all medicine data to form
+        Object.keys(medicineData).forEach(key => {
+            if (key === 'prescription_file' && medicineData[key]) {
+                formData.append('prescription_file', medicineData[key]);
+            } else {
+                formData.append(key, medicineData[key]);
+            }
+        });
+        
         return this.request('/pharmacy/request/', {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: medicineData
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                // Remove Content-Type for FormData to let browser set it with boundary
+            },
+            body: formData
         });
     }
 
