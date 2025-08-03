@@ -12,15 +12,26 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
+            color: #004AAD;
         }
 
+        /* Header Styles */
         .header {
             background: white;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            box-shadow: 0 2px 20px rgba(0, 74, 173, 0.1);
+            border-bottom: 3px solid #004AAD;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -29,150 +40,318 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #4A90E2;
-            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0, 74, 173, 0.3);
         }
 
         .logo-text {
-            font-size: 20px;
-            font-weight: 600;
-            color: #4A90E2;
+            font-size: 24px;
+            font-weight: 700;
+            color: #004AAD;
+            letter-spacing: 1px;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .welcome-text {
             color: #666;
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .user-name {
+            color: #004AAD;
+            font-weight: 600;
         }
 
         .logout-btn {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
         }
 
         .logout-btn:hover {
-            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         }
 
+        /* Main Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 30px 20px;
         }
 
+        /* Welcome Section */
         .welcome-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            color: white;
+            box-shadow: 0 8px 30px rgba(0, 74, 173, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         .welcome-title {
-            font-size: 28px;
-            color: #333;
+            font-size: 32px;
+            font-weight: 700;
             margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
         }
 
         .welcome-subtitle {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 20px;
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
 
-        .notifications {
-            background: #E8F4FD;
-            border-left: 4px solid #4A90E2;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            color: #4A90E2;
-            margin-bottom: 5px;
-        }
-
-        .notification-text {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .nav-grid {
+        /* Stats Section */
+        .stats-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin-top: 30px;
+            margin-bottom: 40px;
         }
 
-        .nav-card {
+        .stat-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 25px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.1);
+            border: 1px solid rgba(0, 74, 173, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-card:hover {
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+        }
+
+        .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 74, 173, 0.2);
         }
 
-        .nav-icon {
-            width: 60px;
-            height: 60px;
-            background: #E8F4FD;
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #E8F4FD 0%, #D1E9FB 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
+            font-size: 20px;
+            color: #004AAD;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #004AAD;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Navigation Grid */
+        .nav-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
             font-size: 24px;
-            color: #4A90E2;
+            font-weight: 700;
+            color: #004AAD;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            border-radius: 2px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(0, 74, 173, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 74, 173, 0.2);
+        }
+
+        .nav-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .nav-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #E8F4FD 0%, #D1E9FB 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: #004AAD;
+            transition: all 0.3s ease;
+        }
+
+        .nav-card:hover .nav-icon {
+            background: linear-gradient(135deg, #004AAD 0%, #48ADE7 100%);
+            color: white;
+            transform: scale(1.1);
         }
 
         .nav-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            color: #004AAD;
+            margin-bottom: 10px;
         }
 
         .nav-description {
             color: #666;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.6;
         }
 
+        /* Notifications Section */
+        .notifications-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 74, 173, 0.1);
+            border: 1px solid rgba(0, 74, 173, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #E8F4FD 0%, #D1E9FB 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #004AAD;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #004AAD;
+            font-size: 16px;
+        }
+
+        .notification-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .header {
+            .header-content {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
@@ -182,77 +361,137 @@
                 grid-template-columns: 1fr;
             }
 
+            .stats-section {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
             .container {
                 padding: 20px 15px;
             }
+
+            .welcome-section {
+                padding: 30px 20px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .welcome-subtitle {
+                font-size: 16px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 74, 173, 0.3);
+            border-radius: 50%;
+            border-top-color: #004AAD;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="header">
-                <div class="logo">
-            <div class="logo-icon">LY</div>
-            <div class="logo-text">LEEYANA</div>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">LY</div>
+                <div class="logo-text">LEEYANA</div>
+            </div>
+            <div class="user-info">
+                <div class="welcome-text">Welcome, <span class="user-name" id="userName">User</span></div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
         </div>
-        <div class="user-info">
-            <div class="welcome-text">Welcome, <span id="userName">User</span></div>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-                </div>
+    </div>
 
     <div class="container">
+        <!-- Welcome Section -->
         <div class="welcome-section">
-            <h1 class="welcome-title">Welcome To LEEYANA</h1>
-            <p class="welcome-subtitle">Manage your health and appointments with ease</p>
-            
-            <div class="notifications">
-                <div class="notification-title">📢 Latest Updates</div>
-                <div class="notification-text">You have no pending notifications at the moment.</div>
+            <h1 class="welcome-title">Welcome to LEEYANA</h1>
+            <p class="welcome-subtitle">Your comprehensive healthcare management platform</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-number" id="appointmentCount">0</div>
+                <div class="stat-label">Appointments</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-icon">💊</div>
+                <div class="stat-number" id="medicationCount">0</div>
+                <div class="stat-label">Active Medications</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔔</div>
+                <div class="stat-number" id="notificationCount">0</div>
+                <div class="stat-label">Notifications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-number" id="recordCount">0</div>
+                <div class="stat-label">Medical Records</div>
+            </div>
+        </div>
 
-        <div class="nav-grid">
-            <a href="../notifications.html" class="nav-card">
-                <div class="nav-icon">🔔</div>
-                <div class="nav-title">Notifications</div>
-                <div class="nav-description">View all your notifications and updates</div>
-            </a>
+        <!-- Notifications Section -->
+        <div class="notifications-section">
+            <div class="notification-header">
+                <div class="notification-icon">🔔</div>
+                <div class="notification-title">Latest Updates</div>
+            </div>
+            <div class="notification-text" id="notificationText">You have no pending notifications at the moment.</div>
+        </div>
 
-            <a href="../userauth/appointment.html" class="nav-card">
-                <div class="nav-icon">📅</div>
-                <div class="nav-title">Appointment</div>
-                <div class="nav-description">Schedule your next medical appointment with our specialists</div>
-            </a>
+        <!-- Navigation Section -->
+        <div class="nav-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="nav-grid">
+                <a href="../notifications.html" class="nav-card">
+                    <div class="nav-icon">🔔</div>
+                    <div class="nav-title">Notifications</div>
+                    <div class="nav-description">Stay updated with your health alerts and important messages</div>
+                </a>
 
-            <a href="../package/package.html" class="nav-card">
-                <div class="nav-icon">📦</div>
-                <div class="nav-title">Packages</div>
-                <div class="nav-description">Explore our comprehensive health checkup packages</div>
-            </a>
+                <a href="../userauth/appointment.html" class="nav-card">
+                    <div class="nav-icon">📅</div>
+                    <div class="nav-title">Book Appointment</div>
+                    <div class="nav-description">Schedule consultations with our expert healthcare specialists</div>
+                </a>
 
-            <a href="../medical_hitory/medical_history.html" class="nav-card">
-                <div class="nav-icon">📋</div>
-                <div class="nav-title">Medical History</div>
-                <div class="nav-description">View your complete medical records and test results</div>
-            </a>
+                <a href="../package/package.html" class="nav-card">
+                    <div class="nav-icon">📦</div>
+                    <div class="nav-title">Health Packages</div>
+                    <div class="nav-description">Explore comprehensive health checkup and wellness packages</div>
+                </a>
 
-            <a href="../pharmacy/pharmacy.html" class="nav-card">
-                <div class="nav-icon">💊</div>
-                <div class="nav-title">Pharmacy</div>
-                <div class="nav-description">Order medicines and upload prescriptions</div>
-            </a>
+                <a href="../medical_hitory/medical_history.html" class="nav-card">
+                    <div class="nav-icon">📋</div>
+                    <div class="nav-title">Medical History</div>
+                    <div class="nav-description">Access your complete medical records and test results</div>
+                </a>
 
-            <a href="profile.html" class="nav-card">
-                <div class="nav-icon">👤</div>
-                <div class="nav-title">Profile</div>
-                <div class="nav-description">Update your personal information and preferences</div>
-            </a>
+                <a href="../pharmacy/pharmacy.html" class="nav-card">
+                    <div class="nav-icon">💊</div>
+                    <div class="nav-title">Pharmacy</div>
+                    <div class="nav-description">Order medicines and upload prescriptions for quick delivery</div>
+                </a>
 
-            <a href="#" class="nav-card" onclick="logout()">
-                <div class="nav-icon">🚪</div>
-                <div class="nav-title">Logout</div>
-                <div class="nav-description">Sign out from your account</div>
-            </a>
+                <a href="profile.html" class="nav-card">
+                    <div class="nav-icon">👤</div>
+                    <div class="nav-title">Profile Settings</div>
+                    <div class="nav-description">Manage your personal information and account preferences</div>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -267,8 +506,9 @@
                 return;
             }
 
-            // Load user profile
+            // Load user profile and dashboard data
             loadUserProfile();
+            loadDashboardData();
         });
 
         // Load user profile
@@ -278,8 +518,39 @@
                 document.getElementById('userName').textContent = profile.full_name || 'User';
             } catch (error) {
                 console.error('Error loading profile:', error);
-                // If profile fails, still show dashboard but with generic name
                 document.getElementById('userName').textContent = 'User';
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                // Load notifications count
+                const notifications = await API.getNotifications();
+                const unreadCount = await API.getUnreadCount();
+                document.getElementById('notificationCount').textContent = unreadCount;
+                
+                // Update notification text
+                if (unreadCount > 0) {
+                    document.getElementById('notificationText').textContent = `You have ${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}.`;
+                }
+
+                // Load medical history for stats
+                try {
+                    const medicalHistory = await API.getMedicalHistory();
+                    if (medicalHistory.prescriptions) {
+                        document.getElementById('medicationCount').textContent = medicalHistory.prescriptions.length;
+                        document.getElementById('recordCount').textContent = medicalHistory.prescriptions.length;
+                    }
+                } catch (error) {
+                    console.error('Error loading medical history:', error);
+                }
+
+                // Set sample appointment count (in real app, this would come from appointments API)
+                document.getElementById('appointmentCount').textContent = '2';
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
             }
         }
 
