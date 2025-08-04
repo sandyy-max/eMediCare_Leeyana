@@ -1,327 +1,216 @@
-# 🏥 eMediCare - Hospital Management System
+# eMediCare - Hospital Management System
 
-A comprehensive hospital management system built with Django REST Framework and modern frontend technologies. This system provides a complete solution for managing patient appointments, medical records, pharmacy operations, health packages, and notifications.
+A comprehensive healthcare management system built with Django REST Framework and modern frontend technologies. This platform streamlines patient appointments, medical records, pharmacy requests, notifications, and health package management.
 
-## 🌟 Features
+## Key Features
 
-### 🔐 Authentication & User Management
-- **Patient Registration & Login** - Secure user authentication with JWT tokens
-- **Profile Management** - Users can view and edit their personal information
-- **Password Change** - Secure password update functionality
-- **Role-based Access** - Different access levels for patients and administrators
+### Authentication & User Management
+- Patient registration and login (JWT tokens)
+- Profile management and password change
+- Role-based access for patients and administrators
 
-### 📅 Appointment Management
-- **Book Appointments** - Patients can book appointments with different departments
-- **Department Selection** - Cardiology, Pulmonology, Dermatology, Pediatrics, Gynecology
-- **Dynamic Doctor Loading** - Shows available doctors based on selected department
-- **Appointment Tracking** - View appointment status and history
-- **Admin Approval** - Administrators can approve, confirm, or reject appointments
-- **Notification System** - Real-time notifications for appointment status changes
-- **Upcoming Appointments** - View confirmed appointments with doctor details
+### Appointment Management
+- Book appointments by department (Cardiology, Pulmonology, etc.)
+- Dynamic doctor selection and appointment tracking
+- Admin approval and notifications
 
-### 💊 Pharmacy System
-- **Medicine Catalog** - Browse available medicines with details
-- **Medicine Requests** - Patients can request specific medicines with prescription upload
-- **Request Tracking** - Track medicine request status
-- **Admin Management** - Administrators can process and manage medicine requests
+### Pharmacy System
+- Medicine catalog browsing
+- Prescription upload and medicine requests
+- Request tracking and admin processing
 
-### 📋 Medical History
-- **Prescription Records** - View past prescriptions and medical history
-- **Doctor Assignments** - Track which doctors provided treatment
-- **Medicine Reminders** - Automated reminders for medicine schedules
-- **Medical Reports** - Access to medical reports and diagnoses
-- **CRUD Operations** - Complete Create, Read, Update, Delete functionality
+### Medical History
+- View prescriptions, reports, and doctor assignments
+- Automated medicine reminders
+- Full CRUD for medical records
 
-### 🏥 Health Packages
-- **Package Browsing** - View available health checkup packages with pricing
-- **Package Purchase** - Buy health packages online with discount options
-- **Package Management** - Track purchased packages and their status
-- **Admin Package Management** - Add and manage health packages
-- **Discount Display** - Show original and discounted prices
+### Health Packages
+- Browse, purchase, and track health packages with discounts
+- Admin package management
 
-### 📱 Notification System
-- **Real-time Notifications** - Comprehensive notification system for all activities
-- **Notification Types** - System, appointment, medicine, package, and admin notifications
-- **Read/Unread Status** - Track notification status
-- **Unified Notification Page** - Centralized notification management
-- **Admin Notifications** - Administrators receive notifications for all activities
+### Notification System
+- Real-time notifications for all activities
+- Centralized notification page
 
-### 🎨 Modern UI/UX
-- **Responsive Design** - Works on all devices
-- **Consistent Design Language** - Unified design across all pages
-- **Interactive Elements** - Modern buttons, forms, and navigation
-- **Loading States** - Smooth user experience with loading indicators
-- **Professional Dashboard** - Enhanced patient dashboard with health news
+### User Interface
+- Responsive, consistent design across devices
+- Interactive dashboard
 
-## 🛠️ Technology Stack
+---
 
-### Backend
-- **Django 5.2.4** - Main web framework
-- **Django REST Framework 3.16.0** - API development
-- **JWT Authentication** - Secure token-based authentication
-- **SQLite/PostgreSQL** - Database management
-- **CORS Headers** - Cross-origin resource sharing
-- **Django Jazzmin** - Enhanced admin interface
-- **DRF YASG** - API documentation
+## Technology Stack
 
-### Frontend
-- **HTML5/CSS3** - Modern, responsive design
-- **JavaScript (ES6+)** - Dynamic functionality
-- **Fetch API** - HTTP requests to backend
-- **Local Storage** - Client-side data persistence
+**Backend:**  
+- Django 5.2.4, Django REST Framework 3.16.0  
+- JWT Authentication, SQLite/PostgreSQL  
+- Django Jazzmin, DRF YASG
 
-### Additional Libraries
-- **Pillow** - Image processing
-- **Twilio** - SMS integration
-- **Django Anymail** - Email integration
-- **Django OTP** - Two-factor authentication
-- **Phone Number Field** - Phone number validation
+**Frontend:**  
+- HTML5/CSS3, JavaScript (ES6+), Fetch API  
+- Local Storage
 
-## 📦 Installation
+**Libraries:**  
+- Pillow, Twilio, Django Anymail, Django OTP, Phone Number Field
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package installer)
+---
 
-### Step 1: Clone the Repository
-```bash
-git clone <repository-url>
-cd eMediCare_last
-```
+## Installation
 
-### Step 2: Set Up Virtual Environment
-```bash
-cd server
-python -m venv env
-# On Windows:
-env\Scripts\activate
-# On macOS/Linux:
-source env/bin/activate
-```
+**Prerequisites:**  
+- Python 3.8+, pip
 
-### Step 3: Install Dependencies
-```bash
-cd emedicare
-pip install -r requirements.txt
-```
+**Steps:**
+1. Clone the Repository
+   ```bash
+   git clone <repository-url>
+   cd eMediCare_last
+   ```
+2. Set Up Virtual Environment
+   ```bash
+   cd server
+   python -m venv env
+   # Windows:
+   env\Scripts\activate
+   # macOS/Linux:
+   source env/bin/activate
+   ```
+3. Install Dependencies
+   ```bash
+   cd emedicare
+   pip install -r requirements.txt
+   ```
+4. Run Migrations
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+5. Create Superuser
+   ```bash
+   python manage.py createsuperuser
+   ```
+6. Start Server
+   ```bash
+   # Windows:
+   start_server.bat
+   # Manual:
+   python manage.py runserver
+   ```
+   Access at `http://localhost:8000`
 
-### Step 4: Run Database Migrations
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
+---
 
-### Step 5: Create Superuser (Admin)
-```bash
-python manage.py createsuperuser
-```
+## Quick Start
 
-### Step 6: Start the Server
-```bash
-# Option 1: Using the batch file (Windows)
-start_server.bat
+- Open `client/home.html` or visit `http://localhost:8000`
+- Register or login
+- Explore appointments, pharmacy, medical history, health packages, notifications, and profile management
 
-# Option 2: Manual start
-python manage.py runserver
-```
+---
 
-The server will be available at `http://localhost:8000`
-
-## 🚀 Quick Start
-
-### 1. Access the Application
-- Open `client/home.html` in your browser
-- Or navigate to `http://localhost:8000` (if configured)
-
-### 2. Register/Login
-- Click "Register Now" to create a new account
-- Or use existing credentials to login
-
-### 3. Explore Features
-- **Book Appointments** - Select department and book appointments with dynamic doctor loading
-- **Browse Pharmacy** - View and request medicines with prescription upload
-- **Check Medical History** - View past prescriptions and medical records
-- **Buy Health Packages** - Purchase health checkup packages with discounts
-- **Manage Profile** - Update personal information and change password
-- **View Notifications** - Check all system notifications in one place
-- **View My Appointments** - See upcoming appointments with doctor details
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 eMediCare_last/
-├── client/                     # Frontend files
-│   ├── home.html              # Landing page
-│   ├── userauth/              # Authentication pages
-│   │   ├── login.html
-│   │   ├── register.html
-│   │   └── appointment.html   # Appointment booking
-│   ├── dashboard/             # User dashboard
-│   │   ├── dashboard.html
-│   │   ├── profile.html
-│   │   └── my_appointments.html
-│   ├── package/              # Health packages
-│   │   └── package.html
-│   ├── pharmacy/             # Pharmacy system
-│   │   └── pharmacy.html
-│   ├── medical_hitory/       # Medical history
-│   │   └── medical_history.html
-│   ├── notifications.html    # Notification center
+├── client/
+│   ├── home.html
+│   ├── userauth/
+│   ├── dashboard/
+│   ├── package/
+│   ├── pharmacy/
+│   ├── medical_history/
+│   ├── notifications.html
 │   └── js/
-│       └── api.js           # API helper functions
 ├── server/
-│   └── emedicare/            # Django backend
-│       ├── userauth/         # User authentication app
-│       ├── appointment/      # Appointment management
-│       ├── clinical/         # Medical records
-│       ├── pharmacy/         # Pharmacy system
-│       ├── package/          # Health packages
-│       ├── notification/     # Notifications
-│       ├── manage.py         # Django management script
-│       └── db.sqlite3        # Database file
-├── requirements.txt           # Python dependencies
-├── start_server.bat          # Windows server startup script
-└── README.md                 # This file
+│   └── emedicare/
+├── requirements.txt
+├── start_server.bat
+└── README.md
 ```
 
-## 🔧 Configuration
+---
 
-### Environment Variables
-Create a `.env` file in `server/emedicare/` with:
+## Configuration
+
+**Environment Variables:**  
+Create `.env` in `server/emedicare/`:
 ```
 SECRET_KEY=your-secret-key
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 
-### Database Configuration
-The project uses SQLite by default. For production, update `settings.py`:
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your_db_name',
-        'USER': 'your_db_user',
-        'PASSWORD': 'your_db_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-```
-
-## 👥 User Roles
-
-### Patient
-- Register and login with secure authentication
-- Book appointments with department-based doctor selection
-- Request medicines with prescription upload
-- View comprehensive medical history
-- Purchase health packages with discount options
-- Manage profile and change password
-- Receive real-time notifications for all activities
-- View upcoming appointments with doctor details
-
-### Administrator
-- Approve, confirm, or reject appointments
-- Assign doctors to appointments
-- Manage medicine inventory and requests
-- Process medicine requests with status updates
-- Manage health packages with pricing
-- Send notifications to patients
-- View system analytics and reports
-
-## 🔒 Security Features
-
-- **JWT Authentication** - Secure token-based authentication
-- **CORS Protection** - Cross-origin request security
-- **Input Validation** - Server-side data validation
-- **SQL Injection Protection** - Django ORM protection
-- **XSS Protection** - Built-in Django security
-- **Password Security** - Secure password change functionality
-- **Role-based Access Control** - Different permissions for different user types
-
-## 🧪 Testing
-
-### Manual Testing
-1. **Registration Flow** - Test user registration with validation
-2. **Login Flow** - Test authentication with JWT tokens
-3. **Appointment Booking** - Test appointment creation with department selection
-4. **Medicine Requests** - Test medicine request with prescription upload
-5. **Notification System** - Test all notification types
-6. **Profile Management** - Test profile updates and password changes
-7. **Medical History** - Test CRUD operations for medical records
-
-### API Testing
-Use tools like Postman or curl to test API endpoints:
-```bash
-# Login
-curl -X POST http://localhost:8000/api/token/ \
-  -H "Content-Type: application/json" \
-  -d '{"phone_number":"1234567890","password":"test123"}' \
-  -H "Accept: application/json"
-
-# Book Appointment
-curl -X POST http://localhost:8000/api/appointments/ \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"full_name":"John Doe","phone_number":"1234567890","department":"Cardiology","symptoms":"Chest pain","email":"john@example.com","dob":"1990-01-01"}'
-
-# Get Medical History
-curl -X GET http://localhost:8000/api/clinical/history/ \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Get Upcoming Appointments
-curl -X GET http://localhost:8000/api/appointments/upcoming/ \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
-
-## 🚀 Deployment
-
-### Development
-```bash
-# Windows
-start_server.bat
-
-# Manual
-python manage.py runserver
-```
-
-### Production
-1. Set `DEBUG = False` in settings
-2. Configure production database
-3. Set up environment variables
-4. Use Gunicorn:
-```bash
-gunicorn emedicare.wsgi:application
-```
-
-## 📞 Support
-
-For issues and questions:
-- Check the documentation
-- Review the code comments
-- Test with the provided sample data
-- Check the notification system for error messages
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🙏 Acknowledgments
-
-- Django community for the excellent framework
-- DRF team for the REST API framework
-- All contributors and testers
-- Healthcare professionals for domain expertise
+**Database:**  
+SQLite by default. For production, update `settings.py` for PostgreSQL.
 
 ---
 
-**Made with ❤️ by SANDHYA for better healthcare management**
+## User Roles
+
+**Patient:**  
+- Register, book appointments, upload prescriptions, view history, buy packages, manage profile, receive notifications
+
+**Administrator:**  
+- Approve appointments, assign doctors, manage inventory, process requests, manage packages, send notifications, view analytics
+
+---
+
+## Security Features
+
+- JWT authentication, CORS protection, input validation, SQL injection and XSS protection, role-based access
+
+---
+
+## Testing
+
+**Manual Testing:**  
+- Test registration, login, bookings, medicine requests, notifications, profile, medical history
+
+**API Testing:**  
+Use Postman or curl for endpoints (see original for examples).
+
+---
+
+## Deployment
+
+**Development:**  
+- Use `start_server.bat` or `python manage.py runserver`
+
+**Production:**  
+- Set `DEBUG=False`, configure database and environment variables, use Gunicorn
+
+---
+
+## Support
+
+- Review documentation and code comments
+- Use sample data for testing
+- Check notification system for errors
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make changes and test
+4. Submit a pull request
+
+---
+
+## License
+
+MIT License.
+
+---
+
+## Acknowledgments
+
+- Django and DRF teams
+- Contributors and testers
+- Healthcare professionals
+
+Made With ❤️ by SANDHYA
+
+---
+
+Developed by SANDHYA for better healthcare management.
